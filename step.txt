@@ -1,22 +1,77 @@
+ first  we create the  folder  name is   "workshop"
+ then we  open the   the  folder in vscode 
+ then we   run  command  uv init .  to initializes 
+ project inside the current folder.
+ then we create the  virtual environment using  -> uv venv
+ then activate the venv -> .venv\Scripts\activate
 
 venv  ---> Activate 
 
-requirements --> Install 
+requirements.txt   and listed libaries we  wanted--> 
+Install by ->uv add -r requirements.txt                                                                                                                           
 
-src ---> package 
+src ---> package   by creating __init__.py file in src folder
 
 src --> logger.py  ---> for logs 
+>Creates a logs folder and a new log file with the current date and time.
+>Provides get_logger() to generate reusable loggers with console output and 
+includes a test message when run directly.
+
 
 src ---> exception.py ---> for error handling 
+>Finds exactly where an error happened, 
+including the Python file name, line number, and the actual error message.
+>Creates a CustomException class that records the error 
+in the log and displays the complete error details when the error occurs.
+
 
 src ---> utils.py ---> for model import , export and performance evalaution 
+>save_object() saves things like a trained ML model into a file using 
+pickle and creates the folder automatically if it does not exist.
+>load_object() opens the saved file and brings the model/object 
+back into Python; if anything goes wrong, CustomException shows the error details.
+
 
 notebook folder --> data folder ---> covid_toy.csv 
+and we create notbook folder  package aswell
+
 
 src ---> compoents ---> __init__.py 
 
 src ----> compoents ---> data_ingestion.py 
+>DataIngestionConfig stores the paths for the original, training, and testing CSV files, while 
+DataIngestion reads the COVID dataset and saves the raw data.
+>It splits the data into 80% training and 20% testing data, 
+saves both files in the artifacts folder, and uses logging and 
+CustomException to track and handle errors.
+
+
+
 
 src ---> compoents ---> data_transformation.py 
 
+>This file prepares the data for ML by filling missing 
+values and converting categorical columns like cough, 
+gender, and city into numbers using encoding.
+>It applies the same preprocessing to train and test data, 
+adds the has_covid target column, and saves the preprocessing
+object as preprocessor.pkl so it can be reused later.
 
+
+
+src ---> components ---> model_trainer.py 
+
+src ---> pipeline ---> train_pipeline.py
+>This file runs the complete ML training process in order
+: Data Ingestion → Data Transformation → Model Training.
+>It finds the best model based on accuracy, logs the result,
+ and displays the best model and its accuracy.
+
+ 
+
+src ---> pipeline ---> predict_pipeline.py
+>CustomData takes user information like age, gender, fever, cough,
+ and city and converts it into a Pandas DataFrame for prediction.
+>PredictPipeline loads the saved preprocessor and ML model, 
+transforms the input data, makes a prediction, and returns the result
+ as Positive/Negative along with the model's confidence score.
