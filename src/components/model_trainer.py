@@ -5,6 +5,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression 
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier 
+from sklearn.naive_bayes import GaussianNB
 import pandas as pd 
 from src.exception import CustomException 
 from src.logger import get_logger 
@@ -28,10 +29,11 @@ class ModelTrainer:
                 test_array[:, -1] 
             )
             models = {
-                "LogisiticRegression": LogisticRegression(max_iter=100),
-                "DecisionTree": DecisionTreeClassifier(random_state=42),
-                "RandomForest":RandomForestClassifier(random_state=42, n_estimators=50),
-                "KNeighboursClassifier":KNeighborsClassifier(n_neighbors=5) 
+                "LogisiticRegression": LogisticRegression(max_iter=1000,random_state=42),
+                "DecisionTree": DecisionTreeClassifier( criterion="gini",max_depth=3,min_samples_split=5,min_samples_leaf=2,random_state=42),
+                "RandomForest":RandomForestClassifier(random_state=42,max_depth=5,min_samples_split=5,min_samples_leaf=2, n_estimators=100),
+                "KNeighboursClassifier":KNeighborsClassifier(n_neighbors=5) ,
+                "NaiveBayes":GaussianNB()
             }
             model_report: dict = evaluate_models(
                 X_train, y_train , X_test , y_test,models

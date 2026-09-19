@@ -1,0 +1,20 @@
+[2026-09-17 15:40:10,648] 11 __main__ -INFO -TRAINING PIPELINE STARTED....
+[2026-09-17 15:40:10,648] 23 src.components.data_ingestion -INFO -Data Ingestion started....
+[2026-09-17 15:40:10,656] 26 src.components.data_ingestion -INFO -Data read successfullywith shape: (100, 6)
+[2026-09-17 15:40:10,662] 31 src.components.data_ingestion -INFO -Performing train-test-split
+[2026-09-17 15:40:10,711] 37 src.components.data_ingestion -INFO -Data Ingestion completed successfully...
+[2026-09-17 15:40:10,712] 39 src.components.data_ingestion -INFO -----------
+[2026-09-17 15:40:10,714] 61 src.components.data_transformation -INFO -Train and test data loaded for transformation
+[2026-09-17 15:40:10,716] 51 src.components.data_transformation -INFO -preprocessor object created successfully...
+[2026-09-17 15:40:10,716] 70 src.components.data_transformation -INFO -Applying preprocessing oon train and test data
+[2026-09-17 15:40:10,733] 15 src.utils -INFO -Object saved successfully at : artifacts\preprocessor.pkl
+[2026-09-17 15:40:10,733] 81 src.components.data_transformation -INFO -Preprcoessor bject saved as preprocessor.pkl
+[2026-09-17 15:40:10,734] 23 src.components.model_trainer -INFO -Spliting train and test input data
+[2026-09-17 15:40:10,796] 34 src.utils -INFO -LogisiticRegression -> Test Accuracy: 0.45
+[2026-09-17 15:40:10,799] 34 src.utils -INFO -DecisionTree -> Test Accuracy: 0.44
+[2026-09-17 15:40:10,875] 34 src.utils -INFO -RandomForest -> Test Accuracy: 0.40
+[2026-09-17 15:40:10,882] 34 src.utils -INFO -KNeighboursClassifier -> Test Accuracy: 0.47
+[2026-09-17 15:40:10,882] 43 src.components.model_trainer -INFO -Best Model saved as model.pkl ::: KNeighboursClassifier
+[2026-09-17 15:40:10,883] 15 src.utils -INFO -Object saved successfully at : artifacts\model.pkl
+[2026-09-17 15:40:10,883] 46 src.components.model_trainer -INFO -Best Model saved: KNeighboursClassifier
+[2026-09-17 15:40:10,883] 25 __main__ -INFO -TRAINING PIPELINE COMPLETED | BEST MODEL: KNeighboursClassifier, Accuracy: 0.47
