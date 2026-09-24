@@ -1,0 +1,22 @@
+[2026-09-19 09:12:55,141] 27 nlp_pretrained.ner_tagger -INFO -NLTK pretrained NER extracted from '
+Elon Musk met Sundar Pichai in California to discuss
+Tesla, Google, and artificial intelligence.
+' : {'GPE': ['California', 'Google'], 'PERSON': ['Elon', 'Musk', 'Sundar Pichai', 'Tesla'], 'ORGANIZATION': []}
+[2026-09-19 09:12:56,066] 27 nlp_pretrained.ner_tagger -INFO -NLTK pretrained NER extracted from '
+Narendra Modi visited New York after meeting Microsoft
+CEO Satya Nadella and Apple executives.
+' : {'GPE': ['New York', 'Apple'], 'PERSON': ['Narendra', 'Modi', 'Microsoft CEO Satya Nadella'], 'ORGANIZATION': []}
+[2026-09-19 09:12:57,049] 27 nlp_pretrained.ner_tagger -INFO -NLTK pretrained NER extracted from '
+Ratan Tata travelled from Mumbai to London and later
+visited the headquarters of Tata Group and Microsoft.
+' : {'GPE': ['Ratan', 'Mumbai', 'London'], 'PERSON': ['Tata'], 'ORGANIZATION': ['Tata Group', 'Microsoft']}
+[2026-09-19 09:12:58,043] 27 nlp_pretrained.ner_tagger -INFO -NLTK pretrained NER extracted from '
+Tim Cook announced that Apple will expand its operations
+in India, while Mark Zuckerberg discussed Meta's plans
+during a meeting in New Delhi.
+' : {'GPE': ['India', 'New Delhi'], 'PERSON': ['Tim', 'Cook', 'Apple', 'Mark Zuckerberg'], 'ORGANIZATION': ['Meta']}
+[2026-09-19 09:12:58,810] 27 nlp_pretrained.ner_tagger -INFO -NLTK pretrained NER extracted from '
+During his visit to Washington, Sundar Pichai spoke with
+Joe Biden about Google's investment in the United States,
+while Elon Musk announced new Tesla projects in Texas.
+' : {'GPE': ['Washington', 'United States', 'Texas'], 'PERSON': ['Sundar Pichai', 'Joe Biden', 'Google', 'Elon Musk'], 'ORGANIZATION': []}
