@@ -1,5 +1,310 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Patient Dashboard</title><link rel="stylesheet" href="/static/style.css"></head>
-<body><header class="site-header"><div class="container nav-wrap"><a class="brand" href="/"><span class="brand-mark">+</span><span>Vijayvargiya Clinic</span></a><nav class="nav-links"><a href="/doctors">Find a Doctor</a><a href="/logout">Logout</a></nav></div></header>
-<main class="section"><div class="container"><div class="dashboard-head"><div><span class="eyebrow">Patient portal</span><h1>Hello, {{ patient.full_name }}</h1><p>Manage your appointments from one place.</p></div><a class="btn btn-primary" href="/doctors">Book Appointment</a></div>
-<section><div class="section-head compact"><div><span class="eyebrow">Your visits</span><h2>Appointments</h2></div></div>{% if appointments %}<div class="appointment-list">{% for item in appointments %}<article class="appointment-card"><div class="appointment-date"><strong>{{ item.slot.slot_date.strftime('%d') }}</strong><span>{{ item.slot.slot_date.strftime('%b') }}</span></div><div class="appointment-main"><h3>Dr. {{ item.doctor_user.full_name }}</h3><p>{{ item.specialization.name }} · {{ item.slot.start_time.strftime('%I:%M %p') }} - {{ item.slot.end_time.strftime('%I:%M %p') }}</p><p class="muted">{{ item.appointment.problem_summary }}</p></div><div class="appointment-side"><span class="status status-{{ item.appointment.status }}">{{ item.appointment.status.title() }}</span><span>{{ item.appointment.appointment_type.replace('_',' ').title() }}</span></div></article>{% endfor %}</div>{% else %}<div class="empty-state"><h2>No appointments yet</h2><p>Choose a doctor and book your first appointment.</p><a class="btn btn-primary" href="/doctors">Find a Doctor</a></div>{% endif %}</section></div></main></body></html>
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+```
+<title>Patient Dashboard | Vijayvargiya Clinic</title>
+
+<link rel="stylesheet" href="/static/style.css">
+```
+
+</head>
+
+<body>
+
+<header class="site-header">
+    <div class="container nav-wrap">
+
+```
+    <a class="brand" href="/">
+        <span class="brand-mark">+</span>
+        <span>Vijayvargiya Clinic</span>
+    </a>
+
+    <nav class="nav-links">
+        <a href="/">Home</a>
+        <a href="/doctors">Find a Doctor</a>
+        <a href="/logout">Logout</a>
+    </nav>
+
+</div>
+```
+
+</header>
+
+<main class="section">
+
+```
+<div class="container">
+
+    <!-- =========================
+         DASHBOARD HEADER
+    ========================== -->
+
+    <section class="dashboard-head">
+
+        <div>
+            <span class="eyebrow">Patient Portal</span>
+
+            <h1>
+                Hello, {{ patient.full_name }}
+            </h1>
+
+            <p>
+                Manage your appointments and healthcare visits from one place.
+            </p>
+        </div>
+
+        <div class="dashboard-actions">
+            <a class="btn btn-primary" href="/doctors">
+                + Book Appointment
+            </a>
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         QUICK ACTIONS
+    ========================== -->
+
+    <section class="dashboard-grid">
+
+        <a href="/doctors" class="dashboard-card">
+
+            <div class="dashboard-card-icon">
+                +
+            </div>
+
+            <div>
+                <h3>Find a Doctor</h3>
+                <p>
+                    Browse doctors by specialization and experience.
+                </p>
+            </div>
+
+        </a>
+
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-card-icon">
+                ✓
+            </div>
+
+            <div>
+                <h3>Your Appointments</h3>
+
+                <p>
+                    {% if appointments %}
+                        {{ appointments|length }} appointment{% if appointments|length != 1 %}s{% endif %}
+                    {% else %}
+                        No appointments yet
+                    {% endif %}
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-card-icon">
+                ♥
+            </div>
+
+            <div>
+                <h3>Healthcare</h3>
+
+                <p>
+                    Keep your healthcare visits organized.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         APPOINTMENTS
+    ========================== -->
+
+    <section class="dashboard-section">
+
+        <div class="section-head compact">
+
+            <div>
+                <span class="eyebrow">Your visits</span>
+
+                <h2>Appointments</h2>
+            </div>
+
+            <a href="/doctors" class="text-link">
+                Book another appointment →
+            </a>
+
+        </div>
+
+
+        {% if appointments %}
+
+            <div class="appointment-list">
+
+                {% for item in appointments %}
+
+                    <article class="appointment-card">
+
+                        <!-- DATE -->
+
+                        <div class="appointment-date">
+
+                            <strong>
+                                {{ item.slot.slot_date.strftime('%d') }}
+                            </strong>
+
+                            <span>
+                                {{ item.slot.slot_date.strftime('%b') }}
+                            </span>
+
+                        </div>
+
+
+                        <!-- MAIN INFORMATION -->
+
+                        <div class="appointment-main">
+
+                            <span class="appointment-label">
+                                Doctor appointment
+                            </span>
+
+                            <h3>
+                                Dr. {{ item.doctor_user.full_name }}
+                            </h3>
+
+                            <p class="appointment-specialization">
+                                {{ item.specialization.name }}
+                            </p>
+
+                            <p class="appointment-time">
+
+                                {{ item.slot.slot_date.strftime('%A, %d %B %Y') }}
+
+                                <br>
+
+                                {{ item.slot.start_time.strftime('%I:%M %p') }}
+                                -
+                                {{ item.slot.end_time.strftime('%I:%M %p') }}
+
+                            </p>
+
+                            {% if item.appointment.problem_summary %}
+
+                                <p class="muted">
+                                    {{ item.appointment.problem_summary }}
+                                </p>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <!-- STATUS -->
+
+                        <div class="appointment-side">
+
+                            <span class="status status-{{ item.appointment.status }}">
+                                {{ item.appointment.status.title() }}
+                            </span>
+
+                            <span class="appointment-type">
+                                {{ item.appointment.appointment_type.replace('_', ' ').title() }}
+                            </span>
+
+                        </div>
+
+                    </article>
+
+                {% endfor %}
+
+            </div>
+
+
+        {% else %}
+
+            <!-- EMPTY STATE -->
+
+            <div class="empty-state">
+
+                <div class="empty-state-icon">
+                    +
+                </div>
+
+                <h2>
+                    No appointments yet
+                </h2>
+
+                <p>
+                    You haven't booked any doctor appointments.
+                    Find a doctor and choose an available time slot to get started.
+                </p>
+
+                <a class="btn btn-primary" href="/doctors">
+                    Find a Doctor
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- =========================
+         FOOTER ACTION
+    ========================== -->
+
+    <section class="dashboard-footer">
+
+        <div>
+
+            <span class="eyebrow">
+                Need medical care?
+            </span>
+
+            <h2>
+                Find the right doctor for you.
+            </h2>
+
+        </div>
+
+        <a class="btn btn-primary" href="/doctors">
+            Browse Doctors
+        </a>
+
+    </section>
+
+</div>
+```
+
+</main>
+
+<footer class="site-footer">
+
+```
+<div class="container">
+
+    <p>
+        © 2026 Vijayvargiya Clinic. All rights reserved.
+    </p>
+
+</div>
+```
+
+</footer>
+
+</body>
+</html>
