@@ -1,0 +1,9 @@
+[2026-09-25 02:55:43,095] 884 main -INFO -Doctor profile accessed. Doctor ID: 32
+[2026-09-25 02:56:00,677] 178 main -INFO -Clinic homepage accessed
+[2026-09-25 02:56:18,789] 605 main -INFO -Patient logged in :: patient_id=37
+[2026-09-25 02:56:22,232] 748 main -INFO -Doctors page accessed. Specialization: None
+[2026-09-25 02:56:24,999] 884 main -INFO -Doctor profile accessed. Doctor ID: 2
+[2026-09-25 02:56:48,320] 884 main -INFO -Doctor profile accessed. Doctor ID: 2
+[2026-09-25 02:57:06,678] 178 main -INFO -Clinic homepage accessed
+[2026-09-25 02:57:10,696] 748 main -INFO -Doctors page accessed. Specialization: 5
+[2026-09-25 02:57:18,429] 884 main -INFO -Doctor profile accessed. Doctor ID: 13

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Book Appointment · Vijayvargiya Clinic</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="container nav-wrap"><a class="brand" href="/"><span class="brand-mark">+</span><span>Vijayvargiya Clinic</span></a><nav class="nav-links"><a href="/doctors">Doctors</a><a href="/patient/dashboard">Dashboard</a></nav></div>
+</header>
+
+<main class="section">
+  <div class="container narrow">
+    <a class="back-link" href="{% if doctor %}/doctors/{{ doctor.id }}{% else %}/doctors{% endif %}">← Back</a>
+    <div class="form-card">
+      <span class="eyebrow">Appointment</span>
+      <h1>Confirm your visit</h1>
+      {% if error %}<div class="alert alert-error">{{ error }}</div>{% endif %}
+
+      {% if doctor and slot %}
+      <div class="booking-summary">
+        <div><span>Doctor</span><strong>Dr. {{ doctor_user.full_name }}</strong><small>{{ specialization.name }}</small></div>
+        <div><span>Date</span><strong>{{ slot.slot_date.strftime('%d %b %Y') }}</strong><small>{{ slot.start_time.strftime('%I:%M %p') }} - {{ slot.end_time.strftime('%I:%M %p') }}</small></div>
+        <div><span>Fee</span><strong>₹{{ doctor.consultation_fee }}</strong><small>{{ doctor.clinic_address or 'Vijayvargiya Clinic, Jaipur' }}</small></div>
+      </div>
+
+      <form method="post" action="/appointments" class="form-stack">
+        <input type="hidden" name="slot_id" value="{{ slot.id }}">
+        <label>Reason for visit<textarea name="problem_summary" rows="5" placeholder="Briefly describe your problem..." required></textarea></label>
+        <fieldset><legend>Appointment type</legend><label class="radio"><input type="radio" name="appointment_type" value="in_person" checked><span>In-person</span></label><label class="radio"><input type="radio" name="appointment_type" value="online"><span>Online</span></label></fieldset>
+        <button class="btn btn-primary btn-block" type="submit">Confirm Appointment</button>
+      </form>
+      {% else %}
+      <a class="btn btn-primary" href="/doctors">Choose a doctor</a>
+      {% endif %}
+    </div>
+  </div>
+</main>
+</body>
+</html>

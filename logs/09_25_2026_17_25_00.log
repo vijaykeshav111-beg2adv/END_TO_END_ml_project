@@ -1,0 +1,5 @@
+[2026-09-25 17:25:09,738] 238 main -INFO -Clinic homepage accessed
+[2026-09-25 17:25:36,487] 638 main -INFO -Patient logged in :: patient_id=38
+[2026-09-25 17:25:43,809] 683 main -INFO -Doctors page accessed. Specialization: 3
+[2026-09-25 17:25:58,164] 683 main -INFO -Doctors page accessed. Specialization: 4
+[2026-09-25 17:26:00,864] 731 main -INFO -Doctor profile accessed. Doctor ID: 19

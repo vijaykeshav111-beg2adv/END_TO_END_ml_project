@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{% if doctor %}Dr. {{ doctor_user.full_name }}{% else %}Doctor{% endif %} · Vijayvargiya Clinic</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="container nav-wrap">
+    <a class="brand" href="/"><span class="brand-mark">+</span><span>Vijayvargiya Clinic</span></a>
+    <nav class="nav-links"><a href="/doctors">Doctors</a><a href="/patient/dashboard">Dashboard</a></nav>
+  </div>
+</header>
+
+<main class="section">
+  <div class="container">
+    {% if not_found %}
+      <div class="empty-state"><h1>Doctor not found</h1><p>The requested doctor is unavailable.</p><a class="btn btn-primary" href="/doctors">Back to Doctors</a></div>
+    {% else %}
+      <a class="back-link" href="/doctors">← Back to doctors</a>
+      <div class="profile-layout">
+        <section class="profile-card">
+          <div class="profile-avatar">{{ doctor_user.full_name[:1] }}</div>
+          <span class="eyebrow">{{ specialization.name }}</span>
+          <h1>Dr. {{ doctor_user.full_name }}</h1>
+          <p class="lead">{{ doctor.qualification or 'Medical professional' }}</p>
+          <div class="stats-row">
+            <div><strong>{{ doctor.experience_years }}</strong><span>Years experience</span></div>
+            <div><strong>₹{{ doctor.consultation_fee }}</strong><span>Consultation</span></div>
+          </div>
+          <div class="profile-section"><h3>Clinic</h3><p>{{ doctor.clinic_address or 'Vijayvargiya Clinic, Jaipur' }}</p></div>
+          {% if doctor.bio %}<div class="profile-section"><h3>About</h3><p>{{ doctor.bio }}</p></div>{% endif %}
+        </section>
+
+        <section class="slots-card">
+          <div class="section-head compact"><div><span class="eyebrow">Appointments</span><h2>Choose a time</h2></div></div>
+          {% if slots %}
+            <div class="slot-list">
+              {% for slot in slots %}
+              <div class="slot-row">
+                <div><strong>{{ slot.slot_date.strftime('%d %b %Y') }}</strong><span>{{ slot.start_time.strftime('%I:%M %p') }} - {{ slot.end_time.strftime('%I:%M %p') }}</span></div>
+                <a class="btn btn-primary" href="/appointments/book?slot_id={{ slot.id }}">Book</a>
+              </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="empty-mini"><h3>No available slots</h3><p>This doctor has no available appointments in the current schedule.</p></div>
+          {% endif %}
+        </section>
+      </div>
+    {% endif %}
+  </div>
+</main>
+</body>
+</html>

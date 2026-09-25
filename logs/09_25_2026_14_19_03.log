@@ -1,0 +1,40 @@
+[2026-09-25 14:19:10,989] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:19:14,647] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:19:18,257] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:19:19,429] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:19:32,083] 1050 main -INFO -Doctor profile accessed. Doctor ID: 32
+[2026-09-25 14:19:32,119] 1123 main -INFO -Doctor ID 32 has 41 available slots
+[2026-09-25 14:19:58,664] 1050 main -INFO -Doctor profile accessed. Doctor ID: 13
+[2026-09-25 14:19:58,672] 1123 main -INFO -Doctor ID 13 has 42 available slots
+[2026-09-25 14:22:40,623] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:22:42,904] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:22:43,090] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:22:43,265] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:22:43,439] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:22:43,614] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:22:43,793] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:22:43,964] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:22:44,114] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:22:44,463] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:22:45,890] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:22:46,999] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:22:47,320] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:22:47,462] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:22:47,624] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:22:47,793] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:22:47,968] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:22:48,137] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:22:48,301] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:22:48,481] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:22:48,668] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:22:48,864] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:22:49,040] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:22:49,210] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:22:49,393] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:22:49,597] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:22:49,810] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:23:41,464] 1050 main -INFO -Doctor profile accessed. Doctor ID: 32
+[2026-09-25 14:23:41,481] 1123 main -INFO -Doctor ID 32 has 41 available slots
+[2026-09-25 14:23:45,274] 1200 main -INFO -Appointment booking page accessed :: slot_id=1315
+[2026-09-25 14:24:18,504] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:24:20,565] 244 main -INFO -Clinic homepage accessed

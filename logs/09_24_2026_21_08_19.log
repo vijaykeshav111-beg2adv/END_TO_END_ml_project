@@ -1,0 +1,15 @@
+[2026-09-24 21:08:28,139] 61 main -INFO -Clinic homepage accessed
+[2026-09-24 21:08:28,514] 88 main -ERROR -Homepage error: 'src.models.doctor.Doctor object' has no attribute 'specialization'
+[2026-09-24 21:08:28,520] 20 src.exception -ERROR -Error occured in python script: [C:\Users\kesha\OneDrive\Desktop\workshop\main.py]at line number: [78]with error message: ['src.models.doctor.Doctor object' has no attribute 'specialization']
+[2026-09-24 21:08:28,745] 61 main -INFO -Clinic homepage accessed
+[2026-09-24 21:08:28,791] 88 main -ERROR -Homepage error: 'src.models.doctor.Doctor object' has no attribute 'specialization'
+[2026-09-24 21:08:28,804] 20 src.exception -ERROR -Error occured in python script: [C:\Users\kesha\OneDrive\Desktop\workshop\main.py]at line number: [78]with error message: ['src.models.doctor.Doctor object' has no attribute 'specialization']
+[2026-09-24 21:08:35,682] 61 main -INFO -Clinic homepage accessed
+[2026-09-24 21:08:35,698] 88 main -ERROR -Homepage error: 'src.models.doctor.Doctor object' has no attribute 'specialization'
+[2026-09-24 21:08:35,704] 20 src.exception -ERROR -Error occured in python script: [C:\Users\kesha\OneDrive\Desktop\workshop\main.py]at line number: [78]with error message: ['src.models.doctor.Doctor object' has no attribute 'specialization']
+[2026-09-24 21:08:53,085] 61 main -INFO -Clinic homepage accessed
+[2026-09-24 21:08:53,099] 88 main -ERROR -Homepage error: 'src.models.doctor.Doctor object' has no attribute 'specialization'
+[2026-09-24 21:08:53,100] 20 src.exception -ERROR -Error occured in python script: [C:\Users\kesha\OneDrive\Desktop\workshop\main.py]at line number: [78]with error message: ['src.models.doctor.Doctor object' has no attribute 'specialization']
+[2026-09-24 21:08:54,940] 61 main -INFO -Clinic homepage accessed
+[2026-09-24 21:08:54,956] 88 main -ERROR -Homepage error: 'src.models.doctor.Doctor object' has no attribute 'specialization'
+[2026-09-24 21:08:54,958] 20 src.exception -ERROR -Error occured in python script: [C:\Users\kesha\OneDrive\Desktop\workshop\main.py]at line number: [78]with error message: ['src.models.doctor.Doctor object' has no attribute 'specialization']

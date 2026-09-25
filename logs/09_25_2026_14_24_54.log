@@ -1,0 +1,170 @@
+[2026-09-25 14:25:09,851] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:25:18,495] 1050 main -INFO -Doctor profile accessed. Doctor ID: 32
+[2026-09-25 14:25:18,540] 1123 main -INFO -Doctor ID 32 has 41 available slots
+[2026-09-25 14:26:20,144] 1050 main -INFO -Doctor profile accessed. Doctor ID: 22
+[2026-09-25 14:26:20,170] 1123 main -INFO -Doctor ID 22 has 42 available slots
+[2026-09-25 14:26:48,050] 923 main -INFO -Doctors page accessed. Specialization=4
+[2026-09-25 14:26:53,949] 923 main -INFO -Doctors page accessed. Specialization=None
+[2026-09-25 14:26:59,280] 923 main -INFO -Doctors page accessed. Specialization=None
+[2026-09-25 14:33:45,093] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:33:48,469] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:35:40,112] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:35:45,292] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:37:31,587] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:37:32,922] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:37:33,641] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:37:33,859] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:38:23,290] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:40:19,773] 1050 main -INFO -Doctor profile accessed. Doctor ID: 17
+[2026-09-25 14:40:19,782] 1123 main -INFO -Doctor ID 17 has 42 available slots
+[2026-09-25 14:40:43,224] 1050 main -INFO -Doctor profile accessed. Doctor ID: 17
+[2026-09-25 14:40:43,240] 1123 main -INFO -Doctor ID 17 has 42 available slots
+[2026-09-25 14:40:54,534] 1050 main -INFO -Doctor profile accessed. Doctor ID: 17
+[2026-09-25 14:40:54,556] 1123 main -INFO -Doctor ID 17 has 42 available slots
+[2026-09-25 14:41:04,909] 1050 main -INFO -Doctor profile accessed. Doctor ID: 17
+[2026-09-25 14:41:04,925] 1123 main -INFO -Doctor ID 17 has 42 available slots
+[2026-09-25 14:43:33,208] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:43:35,552] 1050 main -INFO -Doctor profile accessed. Doctor ID: 17
+[2026-09-25 14:43:35,578] 1123 main -INFO -Doctor ID 17 has 42 available slots
+[2026-09-25 14:43:37,478] 1050 main -INFO -Doctor profile accessed. Doctor ID: 17
+[2026-09-25 14:43:37,490] 1123 main -INFO -Doctor ID 17 has 42 available slots
+[2026-09-25 14:43:46,942] 244 main -INFO -Clinic homepage accessed
+[2026-09-25 14:44:04,585] 1050 main -INFO -Doctor profile accessed. Doctor ID: 18
+[2026-09-25 14:44:04,596] 1123 main -INFO -Doctor ID 18 has 42 available slots
+[2026-09-25 14:44:06,444] 1200 main -INFO -Appointment booking page accessed :: slot_id=721
+[2026-09-25 14:44:13,500] 1378 main -INFO -Appointment creation requested :: slot_id=721, type=in_person
+[2026-09-25 14:44:13,575] 1594 main -INFO -Appointment created successfully :: appointment_id=10, patient_id=38, doctor_id=18, slot_id=721
+[2026-09-25 14:44:57,652] 923 main -INFO -Doctors page accessed. Specialization=None
+[2026-09-25 14:44:57,678] 1023 main -ERROR -Doctors page error: dict object has no element 1
+Traceback (most recent call last):
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\main.py", line 1009, in doctors_page
+    return templates.TemplateResponse(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        request,
+        ^^^^^^^^
+    ...<7 lines>...
+        }
+        ^
+    )
+    ^
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\doctors\list.html", line 333, in top-level template code
+    {{ doctor_user.full_name[0]|upper }}
+    ^
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\jinja2\environment.py", line 490, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: dict object has no element 1
+[2026-09-25 14:44:57,684] 20 src.exception -ERROR -Error occured in python script: [C:\Users\kesha\OneDrive\Desktop\workshop\main.py]at line number: [1009]with error message: [dict object has no element 1]
+[2026-09-25 14:49:54,786] 1050 main -INFO -Doctor profile accessed. Doctor ID: 1
+[2026-09-25 14:49:54,793] 1123 main -INFO -Doctor ID 1 has 41 available slots
+[2026-09-25 14:50:27,049] 923 main -INFO -Doctors page accessed. Specialization=1
+[2026-09-25 14:50:27,054] 1023 main -ERROR -Doctors page error: dict object has no element 1
+Traceback (most recent call last):
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\main.py", line 1009, in doctors_page
+    return templates.TemplateResponse(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        request,
+        ^^^^^^^^
+    ...<7 lines>...
+        }
+        ^
+    )
+    ^
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\doctors\list.html", line 333, in top-level template code
+    {{ doctor_user.full_name[0]|upper }}
+    ^
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\jinja2\environment.py", line 490, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: dict object has no element 1
+[2026-09-25 14:50:27,057] 20 src.exception -ERROR -Error occured in python script: [C:\Users\kesha\OneDrive\Desktop\workshop\main.py]at line number: [1009]with error message: [dict object has no element 1]
+[2026-09-25 14:50:33,882] 923 main -INFO -Doctors page accessed. Specialization=3
+[2026-09-25 14:50:33,888] 1023 main -ERROR -Doctors page error: dict object has no element 1
+Traceback (most recent call last):
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\main.py", line 1009, in doctors_page
+    return templates.TemplateResponse(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        request,
+        ^^^^^^^^
+    ...<7 lines>...
+        }
+        ^
+    )
+    ^
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\doctors\list.html", line 333, in top-level template code
+    {{ doctor_user.full_name[0]|upper }}
+    ^
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\jinja2\environment.py", line 490, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: dict object has no element 1
+[2026-09-25 14:50:33,891] 20 src.exception -ERROR -Error occured in python script: [C:\Users\kesha\OneDrive\Desktop\workshop\main.py]at line number: [1009]with error message: [dict object has no element 1]
+[2026-09-25 14:50:36,855] 923 main -INFO -Doctors page accessed. Specialization=3
+[2026-09-25 14:50:36,861] 1023 main -ERROR -Doctors page error: dict object has no element 1
+Traceback (most recent call last):
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\main.py", line 1009, in doctors_page
+    return templates.TemplateResponse(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        request,
+        ^^^^^^^^
+    ...<7 lines>...
+        }
+        ^
+    )
+    ^
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\doctors\list.html", line 333, in top-level template code
+    {{ doctor_user.full_name[0]|upper }}
+    ^
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\jinja2\environment.py", line 490, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: dict object has no element 1
+[2026-09-25 14:50:36,864] 20 src.exception -ERROR -Error occured in python script: [C:\Users\kesha\OneDrive\Desktop\workshop\main.py]at line number: [1009]with error message: [dict object has no element 1]

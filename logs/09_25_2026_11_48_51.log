@@ -1,0 +1,95 @@
+[2026-09-25 11:49:01,707] 159 main -INFO -Clinic homepage accessed
+[2026-09-25 11:50:16,153] 820 main -INFO -Doctors page accessed. Specialization: 8
+[2026-09-25 11:50:20,156] 932 main -INFO -Doctor profile accessed. Doctor ID: 25
+[2026-09-25 11:50:20,186] 1026 main -ERROR -Doctor profile error: 'doctors/detail.html' not found in search path: 'templates'
+Traceback (most recent call last):
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\main.py", line 1002, in doctor_profile
+    return templates.TemplateResponse(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        request,
+        ^^^^^^^^
+    ...<13 lines>...
+        }
+        ^
+    )
+    ^
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\starlette\templating.py", line 148, in TemplateResponse
+    template = self.get_template(name)
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\starlette\templating.py", line 115, in get_template
+    return self.env.get_template(name)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\jinja2\environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\jinja2\environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\jinja2\loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+                                 ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\jinja2\loaders.py", line 209, in get_source
+    raise TemplateNotFound(
+    ...<2 lines>...
+    )
+jinja2.exceptions.TemplateNotFound: 'doctors/detail.html' not found in search path: 'templates'
+[2026-09-25 11:50:28,590] 932 main -INFO -Doctor profile accessed. Doctor ID: 25
+[2026-09-25 11:50:28,608] 1026 main -ERROR -Doctor profile error: 'doctors/detail.html' not found in search path: 'templates'
+Traceback (most recent call last):
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\main.py", line 1002, in doctor_profile
+    return templates.TemplateResponse(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        request,
+        ^^^^^^^^
+    ...<13 lines>...
+        }
+        ^
+    )
+    ^
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\starlette\templating.py", line 148, in TemplateResponse
+    template = self.get_template(name)
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\starlette\templating.py", line 115, in get_template
+    return self.env.get_template(name)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\jinja2\environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\jinja2\environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\jinja2\loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+                                 ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\jinja2\loaders.py", line 209, in get_source
+    raise TemplateNotFound(
+    ...<2 lines>...
+    )
+jinja2.exceptions.TemplateNotFound: 'doctors/detail.html' not found in search path: 'templates'
+[2026-09-25 11:50:33,626] 932 main -INFO -Doctor profile accessed. Doctor ID: 25
+[2026-09-25 11:50:33,638] 1026 main -ERROR -Doctor profile error: 'doctors/detail.html' not found in search path: 'templates'
+Traceback (most recent call last):
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\main.py", line 1002, in doctor_profile
+    return templates.TemplateResponse(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        request,
+        ^^^^^^^^
+    ...<13 lines>...
+        }
+        ^
+    )
+    ^
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\starlette\templating.py", line 148, in TemplateResponse
+    template = self.get_template(name)
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\starlette\templating.py", line 115, in get_template
+    return self.env.get_template(name)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\jinja2\environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\jinja2\environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\jinja2\loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+                                 ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\jinja2\loaders.py", line 209, in get_source
+    raise TemplateNotFound(
+    ...<2 lines>...
+    )
+jinja2.exceptions.TemplateNotFound: 'doctors/detail.html' not found in search path: 'templates'

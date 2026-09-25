@@ -1,0 +1,28 @@
+[2026-09-25 02:28:24,648] 178 main -INFO -Clinic homepage accessed
+[2026-09-25 02:28:56,479] 884 main -INFO -Doctor profile accessed. Doctor ID: 5
+[2026-09-25 02:29:25,376] 884 main -INFO -Doctor profile accessed. Doctor ID: 1
+[2026-09-25 02:30:08,923] 178 main -INFO -Clinic homepage accessed
+[2026-09-25 02:30:11,198] 178 main -INFO -Clinic homepage accessed
+[2026-09-25 02:30:18,294] 748 main -INFO -Doctors page accessed. Specialization: 1
+[2026-09-25 02:30:37,867] 748 main -INFO -Doctors page accessed. Specialization: 3
+[2026-09-25 02:30:42,514] 884 main -INFO -Doctor profile accessed. Doctor ID: 10
+[2026-09-25 02:30:53,711] 1412 main -INFO -Prediction form page accessed
+[2026-09-25 02:30:58,928] 178 main -INFO -Clinic homepage accessed
+[2026-09-25 02:31:16,175] 748 main -INFO -Doctors page accessed. Specialization: 1
+[2026-09-25 02:31:21,146] 884 main -INFO -Doctor profile accessed. Doctor ID: 3
+[2026-09-25 02:35:55,435] 622 passlib.handlers.bcrypt -WARNING -(trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+[2026-09-25 02:35:55,448] 482 main -ERROR -Patient signup error: password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
+[2026-09-25 02:35:55,448] 20 src.exception -ERROR -Error occured in python script: [C:\Users\kesha\OneDrive\Desktop\workshop\main.py]at line number: [436]with error message: [password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])]
+[2026-09-25 02:38:00,524] 622 passlib.handlers.bcrypt -WARNING -(trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\kesha\OneDrive\Desktop\workshop\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+[2026-09-25 02:38:00,535] 482 main -ERROR -Patient signup error: password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
+[2026-09-25 02:38:00,536] 20 src.exception -ERROR -Error occured in python script: [C:\Users\kesha\OneDrive\Desktop\workshop\main.py]at line number: [436]with error message: [password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])]
