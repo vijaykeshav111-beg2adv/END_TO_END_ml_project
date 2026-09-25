@@ -710,6 +710,180 @@ async def patient_dashboard(
         }
     )
 # ============================================================
+# DOCTOR DASHBOARD
+# ============================================================
+
+@app.get(
+    "/doctor/dashboard",
+    response_class=HTMLResponse
+)
+async def doctor_dashboard(
+    request: Request,
+    db: Session = Depends(get_db)
+):
+
+    user_id = request.session.get("user_id")
+    role = request.session.get("role")
+
+    # ------------------------------------------------
+    # Login check
+    # ------------------------------------------------
+
+    if not user_id:
+        return RedirectResponse(
+            "/login",
+            status_code=303
+        )
+
+    # ------------------------------------------------
+    # Doctor role check
+    # ------------------------------------------------
+
+    if role != "doctor":
+
+        request.session.clear()
+
+        return RedirectResponse(
+            "/login",
+            status_code=303
+        )
+
+    # ------------------------------------------------
+    # Get doctor profile
+    # ------------------------------------------------
+
+    doctor_result = (
+        db.query(
+            Doctor,
+            User,
+            Specialization
+        )
+        .join(
+            User,
+            Doctor.user_id == User.id
+        )
+        .join(
+            Specialization,
+            Doctor.specialization_id
+            == Specialization.id
+        )
+        .filter(
+            Doctor.user_id == user_id
+        )
+        .first()
+    )
+
+    if not doctor_result:
+
+        request.session.clear()
+
+        return RedirectResponse(
+            "/login",
+            status_code=303
+        )
+
+    doctor, doctor_user, specialization = doctor_result
+
+    # ------------------------------------------------
+    # Get appointments
+    # ------------------------------------------------
+
+    appointment_results = (
+        db.query(
+            Appointment,
+            User,
+            DoctorSlot
+        )
+        .join(
+            User,
+            Appointment.patient_id == User.id
+        )
+        .join(
+            DoctorSlot,
+            Appointment.slot_id == DoctorSlot.id
+        )
+        .filter(
+            Appointment.doctor_id == doctor.id
+        )
+        .order_by(
+            DoctorSlot.slot_date.asc(),
+            DoctorSlot.start_time.asc()
+        )
+        .all()
+    )
+
+    appointments = []
+
+    for appointment, patient, slot in appointment_results:
+
+        appointments.append(
+            {
+                "appointment": appointment,
+                "patient": patient,
+                "slot": slot
+            }
+        )
+
+    # ------------------------------------------------
+    # Statistics
+    # ------------------------------------------------
+
+    total_appointments = (
+        db.query(Appointment)
+        .filter(
+            Appointment.doctor_id == doctor.id
+        )
+        .count()
+    )
+
+    pending_appointments = (
+        db.query(Appointment)
+        .filter(
+            Appointment.doctor_id == doctor.id,
+            Appointment.status == "pending"
+        )
+        .count()
+    )
+
+    confirmed_appointments = (
+        db.query(Appointment)
+        .filter(
+            Appointment.doctor_id == doctor.id,
+            Appointment.status == "confirmed"
+        )
+        .count()
+    )
+
+    completed_appointments = (
+        db.query(Appointment)
+        .filter(
+            Appointment.doctor_id == doctor.id,
+            Appointment.status == "completed"
+        )
+        .count()
+    )
+
+    logger.info(
+        "Doctor dashboard accessed :: "
+        f"doctor_id={doctor.id}, "
+        f"user_id={doctor_user.id}"
+    )
+
+    return templates.TemplateResponse(
+        request,
+        "doctor/dashboard.html",
+        {
+            "doctor": doctor,
+            "doctor_user": doctor_user,
+            "specialization": specialization,
+            "appointments": appointments,
+            "total_appointments": total_appointments,
+            "pending_appointments": pending_appointments,
+            "confirmed_appointments": confirmed_appointments,
+            "completed_appointments": completed_appointments
+        }
+    )
+# ============================================================
 # COVID SCREENING
 # ============================================================
 
@@ -826,3 +1000,6 @@ async def health_check():
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+
+
+ 
