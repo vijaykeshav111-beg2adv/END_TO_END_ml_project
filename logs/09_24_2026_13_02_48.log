@@ -1,8 +1,0 @@
-[2026-09-24 13:03:28,435] 22 main -INFO -Home page accessed...
-[2026-09-24 13:03:34,905] 27 main -INFO -Predict form page accessed.....
-[2026-09-24 13:04:02,309] 40 main -INFO -Prediction request received :: age17, genderMale, fever103.2, coughMild,cityDelhi
-[2026-09-24 13:04:02,321] 37 src.pipeline.predict_pipeline -INFO -Loading Model and Preprocessor
-[2026-09-24 13:04:09,331] 49 src.pipeline.predict_pipeline -INFO -Prediction completed: Negative, confidence_score = 60.0
-[2026-09-24 13:04:09,360] 40 main -INFO -Prediction request received :: age17, genderMale, fever103.2, coughMild,cityDelhi
-[2026-09-24 13:04:09,375] 37 src.pipeline.predict_pipeline -INFO -Loading Model and Preprocessor
-[2026-09-24 13:04:09,534] 49 src.pipeline.predict_pipeline -INFO -Prediction completed: Negative, confidence_score = 60.0

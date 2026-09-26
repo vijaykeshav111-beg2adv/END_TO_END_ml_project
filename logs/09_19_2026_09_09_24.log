@@ -1,3 +1,0 @@
-[2026-09-19 09:09:25,187] 27 nlp_pretrained.ner_tagger -INFO -NLTK pretrained NER extracted from 'Apple is in London' : {'GPE': ['Apple', 'London'], 'PERSON': [], 'ORGANIZATION': []}
-[2026-09-19 09:09:26,048] 27 nlp_pretrained.ner_tagger -INFO -NLTK pretrained NER extracted from 'Barack Obama was born in Hawaii' : {'GPE': ['Hawaii'], 'PERSON': ['Barack', 'Obama'], 'ORGANIZATION': []}
-[2026-09-19 09:09:26,928] 27 nlp_pretrained.ner_tagger -INFO -NLTK pretrained NER extracted from 'Google was founded by Larry Page in California' : {'GPE': ['California'], 'PERSON': ['Google', 'Larry Page'], 'ORGANIZATION': []}

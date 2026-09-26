@@ -1,8 +1,0 @@
-[2026-09-17 12:25:22,853] 40 main -INFO -Prediction request received :: age20, genderMale, fever104.4, coughStrong,cityDelhi
-[2026-09-17 12:25:22,855] 37 src.pipeline.predict_pipeline -INFO -Loading Model and Preprocessor
-[2026-09-17 12:25:27,194] 40 main -INFO -Prediction request received :: age20, genderMale, fever104.4, coughStrong,cityDelhi
-[2026-09-17 12:25:27,195] 37 src.pipeline.predict_pipeline -INFO -Loading Model and Preprocessor
-[2026-09-17 12:25:31,644] 40 main -INFO -Prediction request received :: age20, genderMale, fever104.4, coughStrong,cityDelhi
-[2026-09-17 12:25:31,645] 37 src.pipeline.predict_pipeline -INFO -Loading Model and Preprocessor
-[2026-09-17 12:25:35,644] 40 main -INFO -Prediction request received :: age20, genderMale, fever104.4, coughStrong,cityDelhi
-[2026-09-17 12:25:35,646] 37 src.pipeline.predict_pipeline -INFO -Loading Model and Preprocessor

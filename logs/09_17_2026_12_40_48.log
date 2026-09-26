@@ -1,9 +1,0 @@
-[2026-09-17 12:41:01,006] 40 main -INFO -Prediction request received :: age25, genderMale, fever93.0, coughMild,cityBangalore
-[2026-09-17 12:41:01,007] 37 src.pipeline.predict_pipeline -INFO -Loading Model and Preprocessor
-[2026-09-17 12:41:01,292] 49 src.pipeline.predict_pipeline -INFO -Prediction completed: Positive, confidence_score = 100.0
-[2026-09-17 12:41:06,197] 40 main -INFO -Prediction request received :: age25, genderMale, fever93.0, coughMild,cityBangalore
-[2026-09-17 12:41:06,198] 37 src.pipeline.predict_pipeline -INFO -Loading Model and Preprocessor
-[2026-09-17 12:41:06,218] 49 src.pipeline.predict_pipeline -INFO -Prediction completed: Positive, confidence_score = 100.0
-[2026-09-17 12:41:30,180] 40 main -INFO -Prediction request received :: age30, genderMale, fever96.0, coughMild,cityDelhi
-[2026-09-17 12:41:30,182] 37 src.pipeline.predict_pipeline -INFO -Loading Model and Preprocessor
-[2026-09-17 12:41:30,207] 49 src.pipeline.predict_pipeline -INFO -Prediction completed: Negative, confidence_score = 100.0

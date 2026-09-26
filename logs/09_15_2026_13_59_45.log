@@ -1,5 +1,0 @@
-[2026-09-15 13:59:45,975] 61 __main__ -INFO -Train and test data loaded for transformation
-[2026-09-15 13:59:45,980] 51 __main__ -INFO -preprocessor object created successfully...
-[2026-09-15 13:59:45,980] 70 __main__ -INFO -Applying preprocessing oon train and test data
-[2026-09-15 13:59:46,029] 15 src.utils -INFO -Object saved successfully at : artifacts\preprocessor.pkl
-[2026-09-15 13:59:46,029] 81 __main__ -INFO -Preprcoessor bject saved as preprocessor.pkl

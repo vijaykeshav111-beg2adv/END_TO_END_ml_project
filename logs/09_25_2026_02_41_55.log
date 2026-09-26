@@ -1,5 +1,0 @@
-[2026-09-25 02:43:23,719] 465 main -INFO -New patient registered :: patient_id=37, email=dhruv123@gmail.com
-[2026-09-25 02:43:38,875] 748 main -INFO -Doctors page accessed. Specialization: None
-[2026-09-25 02:45:07,600] 605 main -INFO -Patient logged in :: patient_id=37
-[2026-09-25 02:45:12,055] 748 main -INFO -Doctors page accessed. Specialization: None
-[2026-09-25 02:45:18,083] 884 main -INFO -Doctor profile accessed. Doctor ID: 32
