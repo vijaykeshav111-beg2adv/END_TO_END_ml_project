@@ -1082,3 +1082,250 @@ fieldset {
         font-size: 32px;
     }
 }
+/* =========================================================
+   APPOINTMENT BOOKING PAGE
+========================================================= */
+
+.booking-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(280px, 0.8fr);
+    gap: 28px;
+    align-items: start;
+}
+
+
+/* =========================================================
+   BOOKING FORM
+========================================================= */
+
+.form-intro {
+    margin: 8px 0 24px;
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-field label {
+    font-weight: 700;
+}
+
+.field-help {
+    margin: 0 0 8px;
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.form-field textarea {
+    width: 100%;
+    min-height: 150px;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+
+/* =========================================================
+   APPOINTMENT TYPE
+========================================================= */
+
+.appointment-type-fieldset {
+    border: 0;
+    padding: 0;
+    margin: 24px 0 0;
+}
+
+.appointment-type-fieldset legend {
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.appointment-type-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 14px;
+}
+
+.appointment-type-option {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    border: 1px solid #dbe3ef;
+    border-radius: 12px;
+    background: #fff;
+    cursor: pointer;
+    transition: border-color 0.2s ease,
+                background 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+.appointment-type-option:hover {
+    border-color: #4f6df5;
+    background: #f8faff;
+}
+
+.appointment-type-option input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    flex: 0 0 auto;
+    accent-color: #315bea;
+}
+
+.appointment-type-option:has(input[type="radio"]:checked) {
+    border-color: #315bea;
+    background: #f5f8ff;
+    box-shadow: 0 0 0 2px rgba(49, 91, 234, 0.08);
+}
+
+.appointment-type-content {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.appointment-type-content strong {
+    font-size: 15px;
+}
+
+.appointment-type-content small {
+    color: #64748b;
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   CONFIRM SECTION
+========================================================= */
+
+.booking-confirm {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 28px;
+    padding-top: 22px;
+    border-top: 1px solid #e5eaf2;
+}
+
+.booking-confirm > div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.booking-confirm strong {
+    font-size: 15px;
+}
+
+.booking-confirm span {
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.booking-confirm .btn {
+    min-width: 220px;
+}
+
+
+/* =========================================================
+   RIGHT SIDE VISIT CARD
+========================================================= */
+
+.booking-side-card {
+    position: sticky;
+    top: 24px;
+    padding: 28px;
+    border: 1px solid #e3e9f2;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 12px 35px rgba(15, 23, 42, 0.06);
+}
+
+.booking-side-card h2 {
+    margin: 8px 0 24px;
+}
+
+.booking-side-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.booking-side-list > div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.booking-side-list span {
+    color: #64748b;
+    font-size: 13px;
+}
+
+.booking-side-list strong {
+    font-size: 15px;
+    color: #0f274c;
+}
+
+
+/* =========================================================
+   IMPORTANT NOTE
+========================================================= */
+
+.booking-note {
+    margin-top: 26px;
+    padding: 16px;
+    border-radius: 12px;
+    background: #f5f8ff;
+}
+
+.booking-note strong {
+    display: block;
+    margin-bottom: 6px;
+}
+
+.booking-note p {
+    margin: 0;
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 850px) {
+
+    .booking-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .booking-side-card {
+        position: static;
+    }
+
+    .appointment-type-options {
+        grid-template-columns: 1fr;
+    }
+
+    .booking-confirm {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .booking-confirm .btn {
+        width: 100%;
+        min-width: 0;
+    }
+}
