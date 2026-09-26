@@ -1,42 +1,407 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Book Appointment · Vijayvargiya Clinic</title>
-  <link rel="stylesheet" href="/static/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+```
+<title>Book Appointment | Vijayvargiya Clinic</title>
+
+<link rel="stylesheet" href="/static/style.css">
+```
+
 </head>
+
 <body>
+
 <header class="site-header">
-  <div class="container nav-wrap"><a class="brand" href="/"><span class="brand-mark">+</span><span>Vijayvargiya Clinic</span></a><nav class="nav-links"><a href="/doctors">Doctors</a><a href="/patient/dashboard">Dashboard</a></nav></div>
+
+```
+<div class="container nav-wrap">
+
+    <a class="brand" href="/">
+        <span class="brand-mark">+</span>
+        <span>Vijayvargiya Clinic</span>
+    </a>
+
+    <nav class="nav-links">
+        <a href="/">Home</a>
+        <a href="/doctors">Find a Doctor</a>
+        <a href="/patient/dashboard">Dashboard</a>
+    </nav>
+
+</div>
+```
+
 </header>
 
 <main class="section">
-  <div class="container narrow">
-    <a class="back-link" href="{% if doctor %}/doctors/{{ doctor.id }}{% else %}/doctors{% endif %}">← Back</a>
-    <div class="form-card">
-      <span class="eyebrow">Appointment</span>
-      <h1>Confirm your visit</h1>
-      {% if error %}<div class="alert alert-error">{{ error }}</div>{% endif %}
 
-      {% if doctor and slot %}
-      <div class="booking-summary">
-        <div><span>Doctor</span><strong>Dr. {{ doctor_user.full_name }}</strong><small>{{ specialization.name }}</small></div>
-        <div><span>Date</span><strong>{{ slot.slot_date.strftime('%d %b %Y') }}</strong><small>{{ slot.start_time.strftime('%I:%M %p') }} - {{ slot.end_time.strftime('%I:%M %p') }}</small></div>
-        <div><span>Fee</span><strong>₹{{ doctor.consultation_fee }}</strong><small>{{ doctor.clinic_address or 'Vijayvargiya Clinic, Jaipur' }}</small></div>
-      </div>
+```
+<div class="container narrow">
 
-      <form method="post" action="/appointments" class="form-stack">
-        <input type="hidden" name="slot_id" value="{{ slot.id }}">
-        <label>Reason for visit<textarea name="problem_summary" rows="5" placeholder="Briefly describe your problem..." required></textarea></label>
-        <fieldset><legend>Appointment type</legend><label class="radio"><input type="radio" name="appointment_type" value="in_person" checked><span>In-person</span></label><label class="radio"><input type="radio" name="appointment_type" value="online"><span>Online</span></label></fieldset>
-        <button class="btn btn-primary btn-block" type="submit">Confirm Appointment</button>
-      </form>
-      {% else %}
-      <a class="btn btn-primary" href="/doctors">Choose a doctor</a>
-      {% endif %}
+    <a
+        class="back-link"
+        href="{% if doctor %}/doctors/{{ doctor.id }}{% else %}/doctors{% endif %}"
+    >
+        ← Back to doctor
+    </a>
+
+
+    {% if doctor and slot %}
+
+    <div class="booking-layout">
+
+
+        <!-- BOOKING FORM -->
+
+        <section class="form-card">
+
+            <span class="eyebrow">
+                Appointment booking
+            </span>
+
+            <h1>
+                Confirm your appointment
+            </h1>
+
+            <p class="form-intro">
+                Review the appointment details and tell the doctor
+                briefly why you are visiting.
+            </p>
+
+
+            {% if error %}
+
+            <div class="alert alert-error">
+                {{ error }}
+            </div>
+
+            {% endif %}
+
+
+            <!-- APPOINTMENT SUMMARY -->
+
+            <div class="booking-summary">
+
+                <div class="booking-summary-item">
+
+                    <span class="summary-label">
+                        Doctor
+                    </span>
+
+                    <strong>
+                        Dr. {{ doctor_user.full_name }}
+                    </strong>
+
+                    <small>
+                        {{ specialization.name }}
+                    </small>
+
+                </div>
+
+
+                <div class="booking-summary-item">
+
+                    <span class="summary-label">
+                        Date & time
+                    </span>
+
+                    <strong>
+                        {{ slot.slot_date.strftime('%d %b %Y') }}
+                    </strong>
+
+                    <small>
+                        {{ slot.start_time.strftime('%I:%M %p') }}
+                        -
+                        {{ slot.end_time.strftime('%I:%M %p') }}
+                    </small>
+
+                </div>
+
+
+                <div class="booking-summary-item">
+
+                    <span class="summary-label">
+                        Consultation fee
+                    </span>
+
+                    <strong>
+                        ₹{{ doctor.consultation_fee }}
+                    </strong>
+
+                    <small>
+                        {{ doctor.clinic_address or
+                           'Vijayvargiya Clinic, Jaipur' }}
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <!-- FORM -->
+
+            <form
+                method="post"
+                action="/appointments"
+                class="form-stack"
+            >
+
+                <input
+                    type="hidden"
+                    name="slot_id"
+                    value="{{ slot.id }}"
+                >
+
+
+                <!-- PROBLEM -->
+
+                <div class="form-field">
+
+                    <label for="problem_summary">
+                        Reason for visit
+                    </label>
+
+                    <p class="field-help">
+                        Briefly describe your symptoms or reason
+                        for consultation.
+                    </p>
+
+                    <textarea
+                        id="problem_summary"
+                        name="problem_summary"
+                        rows="6"
+                        placeholder="Example: I have had a fever and cough for the last three days..."
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <!-- APPOINTMENT TYPE -->
+
+                <fieldset class="appointment-type-fieldset">
+
+                    <legend>
+                        Appointment type
+                    </legend>
+
+                    <p class="field-help">
+                        Choose how you would like to consult the doctor.
+                    </p>
+
+
+                    <div class="appointment-type-options">
+
+                        <label class="appointment-type-option">
+
+                            <input
+                                type="radio"
+                                name="appointment_type"
+                                value="in_person"
+                                checked
+                            >
+
+                            <span class="appointment-type-content">
+
+                                <strong>
+                                    In-person
+                                </strong>
+
+                                <small>
+                                    Visit Vijayvargiya Clinic
+                                </small>
+
+                            </span>
+
+                        </label>
+
+
+                        <label class="appointment-type-option">
+
+                            <input
+                                type="radio"
+                                name="appointment_type"
+                                value="online"
+                            >
+
+                            <span class="appointment-type-content">
+
+                                <strong>
+                                    Online
+                                </strong>
+
+                                <small>
+                                    Consult remotely
+                                </small>
+
+                            </span>
+
+                        </label>
+
+                    </div>
+
+                </fieldset>
+
+
+                <!-- CONFIRM -->
+
+                <div class="booking-confirm">
+
+                    <div>
+
+                        <strong>
+                            Ready to book?
+                        </strong>
+
+                        <span>
+                            Your selected slot will be submitted
+                            for appointment confirmation.
+                        </span>
+
+                    </div>
+
+                    <button
+                        class="btn btn-primary btn-block"
+                        type="submit"
+                    >
+                        Confirm Appointment
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+
+        <!-- SIDE INFORMATION -->
+
+        <aside class="booking-side-card">
+
+            <span class="eyebrow">
+                Your visit
+            </span>
+
+            <h2>
+                Appointment details
+            </h2>
+
+            <div class="booking-side-list">
+
+                <div>
+                    <span>Doctor</span>
+                    <strong>
+                        Dr. {{ doctor_user.full_name }}
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Specialty</span>
+                    <strong>
+                        {{ specialization.name }}
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Date</span>
+                    <strong>
+                        {{ slot.slot_date.strftime('%d %b %Y') }}
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Time</span>
+                    <strong>
+                        {{ slot.start_time.strftime('%I:%M %p') }}
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Fee</span>
+                    <strong>
+                        ₹{{ doctor.consultation_fee }}
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <div class="booking-note">
+
+                <strong>
+                    Important
+                </strong>
+
+                <p>
+                    Please provide accurate information about
+                    your reason for visiting. This helps the
+                    clinic prepare for your consultation.
+                </p>
+
+            </div>
+
+        </aside>
+
     </div>
-  </div>
+
+
+    {% else %}
+
+    <!-- INVALID BOOKING -->
+
+    <section class="empty-state">
+
+        <div class="empty-state-icon">
+            !
+        </div>
+
+        <span class="eyebrow">
+            Appointment
+        </span>
+
+        <h1>
+            Appointment slot unavailable
+        </h1>
+
+        <p>
+            The selected doctor or appointment slot could not
+            be found. Please return to the doctor directory
+            and choose another available slot.
+        </p>
+
+        <a
+            class="btn btn-primary"
+            href="/doctors"
+        >
+            Find a Doctor
+        </a>
+
+    </section>
+
+    {% endif %}
+
+</div>
+```
+
 </main>
+
+<footer class="site-footer">
+
+```
+<div class="container">
+
+    <p>
+        © 2026 Vijayvargiya Clinic. All rights reserved.
+    </p>
+
+</div>
+```
+
+</footer>
+
 </body>
 </html>
