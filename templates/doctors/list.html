@@ -1,66 +1,391 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Doctors · Vijayvargiya Clinic</title>
-  <link rel="stylesheet" href="/static/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+```
+<title>Find a Doctor | Vijayvargiya Clinic</title>
+
+<link rel="stylesheet" href="/static/style.css">
+```
+
 </head>
+
 <body>
+
 <header class="site-header">
-  <div class="container nav-wrap">
-    <a class="brand" href="/"><span class="brand-mark">+</span><span>Vijayvargiya Clinic</span></a>
-    <nav class="nav-links"><a href="/">Home</a><a class="active" href="/doctors">Doctors</a><a href="/patient/dashboard">Dashboard</a></nav>
-  </div>
+
+```
+<div class="container nav-wrap">
+
+    <a class="brand" href="/">
+        <span class="brand-mark">+</span>
+        <span>Vijayvargiya Clinic</span>
+    </a>
+
+    <nav class="nav-links">
+
+        <a href="/">Home</a>
+
+        <a class="active" href="/doctors">
+            Find a Doctor
+        </a>
+
+        <a href="/patient/dashboard">
+            Dashboard
+        </a>
+
+    </nav>
+
+</div>
+```
+
 </header>
 
 <main class="section">
-  <div class="container">
-    <div class="page-title-row">
-      <div>
-        <span class="eyebrow">Medical team</span>
-        <h1>Find your doctor</h1>
-        <p>Filter by specialty and open a profile to see that doctor's actual available slots.</p>
-      </div>
-    </div>
 
-    <div class="filter-bar">
-      <a class="filter-pill {% if not selected_specialization %}selected{% endif %}" href="/doctors">All doctors</a>
-      {% for item in specializations %}
-      <a class="filter-pill {% if selected_specialization and selected_specialization.id == item.id %}selected{% endif %}" href="/doctors?specialization={{ item.id }}">{{ item.name }}</a>
-      {% endfor %}
-    </div>
+```
+<div class="container">
 
-    {% if selected_specialization %}
-      <div class="result-heading">{{ selected_specialization.name }} <span>{{ doctors|length }} doctor{% if doctors|length != 1 %}s{% endif %}</span></div>
-    {% endif %}
+    <!-- =========================================
+         PAGE HEADER
+    ========================================== -->
+
+    <section class="page-title-row">
+
+        <div>
+
+            <span class="eyebrow">
+                Vijayvargiya Clinic
+            </span>
+
+            <h1>
+                Find the right doctor
+            </h1>
+
+            <p>
+                Browse our medical specialists and choose a doctor
+                based on specialty, experience, and consultation fee.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         SPECIALIZATION FILTERS
+    ========================================== -->
+
+    <section class="doctor-filters">
+
+        <div class="filter-header">
+
+            <div>
+                <span class="eyebrow">
+                    Specializations
+                </span>
+
+                <h2>
+                    Browse by specialty
+                </h2>
+            </div>
+
+        </div>
+
+
+        <div class="filter-bar">
+
+            <a
+                class="filter-pill {% if not selected_specialization %}selected{% endif %}"
+                href="/doctors"
+            >
+                All doctors
+            </a>
+
+
+            {% for item in specializations %}
+
+                <a
+                    class="filter-pill {% if selected_specialization and selected_specialization.id == item.id %}selected{% endif %}"
+                    href="/doctors?specialization={{ item.id }}"
+                >
+                    {{ item.name }}
+                </a>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         RESULT HEADER
+    ========================================== -->
+
+    <section class="doctor-results-header">
+
+        <div>
+
+            {% if selected_specialization %}
+
+                <span class="eyebrow">
+                    Selected specialty
+                </span>
+
+                <h2>
+                    {{ selected_specialization.name }}
+                </h2>
+
+            {% else %}
+
+                <span class="eyebrow">
+                    Medical team
+                </span>
+
+                <h2>
+                    All doctors
+                </h2>
+
+            {% endif %}
+
+        </div>
+
+
+        <div class="doctor-count">
+
+            <strong>
+                {{ doctors|length }}
+            </strong>
+
+            <span>
+                doctor{% if doctors|length != 1 %}s{% endif %}
+            </span>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         DOCTOR GRID
+    ========================================== -->
 
     {% if doctors %}
-    <div class="doctor-grid">
-      {% for item in doctors %}
-      <article class="doctor-card">
-        <div class="doctor-top">
-          <div class="doctor-avatar">{{ item.user.full_name[:1] }}</div>
-          <span class="available-badge">Available</span>
+
+        <div class="doctor-grid">
+
+            {% for item in doctors %}
+
+                <article class="doctor-card">
+
+                    <!-- CARD HEADER -->
+
+                    <div class="doctor-top">
+
+                        <div class="doctor-avatar">
+
+                            {{ item.user.full_name[:1]|upper }}
+
+                        </div>
+
+
+                        <span class="available-badge">
+
+                            <span class="availability-dot"></span>
+
+                            Available
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- CARD CONTENT -->
+
+                    <div class="doctor-body">
+
+                        <p class="specialty-name">
+
+                            {{ item.specialization.name }}
+
+                        </p>
+
+
+                        <h2>
+
+                            Dr. {{ item.user.full_name }}
+
+                        </h2>
+
+
+                        <p class="doctor-qualification">
+
+                            {{ item.doctor.qualification or
+                               'Qualified medical professional' }}
+
+                        </p>
+
+
+                        <!-- DOCTOR STATS -->
+
+                        <div class="doctor-meta">
+
+                            <div>
+
+                                <span class="meta-label">
+                                    Experience
+                                </span>
+
+                                <strong>
+                                    {{ item.doctor.experience_years }}
+                                    years
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span class="meta-label">
+                                    Consultation
+                                </span>
+
+                                <strong>
+                                    ₹{{ item.doctor.consultation_fee }}
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- CLINIC -->
+
+                        <div class="doctor-location">
+
+                            <span class="location-icon">
+                                +
+                            </span>
+
+                            <span>
+                                {{ item.doctor.clinic_address or
+                                   'Vijayvargiya Clinic, Jaipur' }}
+                            </span>
+
+                        </div>
+
+
+                        <!-- ACTION -->
+
+                        <a
+                            class="btn btn-primary btn-block"
+                            href="/doctors/{{ item.doctor.id }}"
+                        >
+                            View Doctor Profile
+                        </a>
+
+                    </div>
+
+                </article>
+
+            {% endfor %}
+
         </div>
-        <div class="doctor-body">
-          <p class="specialty-name">{{ item.specialization.name }}</p>
-          <h2>Dr. {{ item.user.full_name }}</h2>
-          <p class="muted">{{ item.doctor.qualification or 'Qualified medical professional' }}</p>
-          <div class="doctor-meta">
-            <span>{{ item.doctor.experience_years }} yrs experience</span>
-            <span>₹{{ item.doctor.consultation_fee }}</span>
-          </div>
-          <p class="muted">{{ item.doctor.clinic_address or 'Vijayvargiya Clinic, Jaipur' }}</p>
-          <a class="btn btn-primary btn-block" href="/doctors/{{ item.doctor.id }}">View Profile</a>
-        </div>
-      </article>
-      {% endfor %}
-    </div>
+
+
     {% else %}
-      <div class="empty-state"><h2>No doctors found</h2><p>There are no available doctors for this specialty.</p><a class="btn btn-primary" href="/doctors">Show all doctors</a></div>
+
+        <!-- =========================================
+             EMPTY STATE
+        ========================================== -->
+
+        <section class="empty-state">
+
+            <div class="empty-state-icon">
+                ?
+            </div>
+
+            <span class="eyebrow">
+                No results
+            </span>
+
+            <h2>
+                No doctors found
+            </h2>
+
+            <p>
+                There are currently no doctors available
+                for this specialization.
+            </p>
+
+            <a
+                class="btn btn-primary"
+                href="/doctors"
+            >
+                Show All Doctors
+            </a>
+
+        </section>
+
     {% endif %}
-  </div>
+
+
+    <!-- =========================================
+         INFORMATION BANNER
+    ========================================== -->
+
+    <section class="doctor-info-banner">
+
+        <div>
+
+            <span class="eyebrow">
+                Need help?
+            </span>
+
+            <h2>
+                Choose a specialist and check available appointments.
+            </h2>
+
+            <p>
+                Open a doctor's profile to view their consultation
+                details and available time slots.
+            </p>
+
+        </div>
+
+        <a
+            href="/"
+            class="btn btn-secondary"
+        >
+            Back to Home
+        </a>
+
+    </section>
+
+</div>
+```
+
 </main>
+
+<footer class="site-footer">
+
+```
+<div class="container">
+
+    <p>
+        © 2026 Vijayvargiya Clinic. All rights reserved.
+    </p>
+
+</div>
+```
+
+</footer>
+
 </body>
+
 </html>

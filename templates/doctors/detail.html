@@ -1,57 +1,352 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>{% if doctor %}Dr. {{ doctor_user.full_name }}{% else %}Doctor{% endif %} · Vijayvargiya Clinic</title>
-  <link rel="stylesheet" href="/static/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+```
+<title>
+    {% if doctor %}
+        Dr. {{ doctor_user.full_name }} | Vijayvargiya Clinic
+    {% else %}
+        Doctor | Vijayvargiya Clinic
+    {% endif %}
+</title>
+
+<link rel="stylesheet" href="/static/style.css">
+```
+
 </head>
+
 <body>
+
 <header class="site-header">
-  <div class="container nav-wrap">
-    <a class="brand" href="/"><span class="brand-mark">+</span><span>Vijayvargiya Clinic</span></a>
-    <nav class="nav-links"><a href="/doctors">Doctors</a><a href="/patient/dashboard">Dashboard</a></nav>
-  </div>
+    <div class="container nav-wrap">
+
+```
+    <a class="brand" href="/">
+        <span class="brand-mark">+</span>
+        <span>Vijayvargiya Clinic</span>
+    </a>
+
+    <nav class="nav-links">
+        <a href="/">Home</a>
+        <a class="active" href="/doctors">Find a Doctor</a>
+        <a href="/patient/dashboard">Dashboard</a>
+    </nav>
+
+</div>
+```
+
 </header>
 
 <main class="section">
-  <div class="container">
+    <div class="container">
+
+```
     {% if not_found %}
-      <div class="empty-state"><h1>Doctor not found</h1><p>The requested doctor is unavailable.</p><a class="btn btn-primary" href="/doctors">Back to Doctors</a></div>
+
+    <section class="empty-state">
+
+        <div class="empty-state-icon">?</div>
+
+        <span class="eyebrow">Doctor profile</span>
+
+        <h1>Doctor not found</h1>
+
+        <p>
+            The requested doctor is unavailable or no longer
+            exists in the clinic directory.
+        </p>
+
+        <a class="btn btn-primary" href="/doctors">
+            Back to Doctors
+        </a>
+
+    </section>
+
+
     {% else %}
-      <a class="back-link" href="/doctors">← Back to doctors</a>
-      <div class="profile-layout">
+
+    <a class="back-link" href="/doctors">
+        ← Back to doctors
+    </a>
+
+
+    <div class="profile-layout">
+
+
+        <!-- DOCTOR PROFILE -->
+
         <section class="profile-card">
-          <div class="profile-avatar">{{ doctor_user.full_name[:1] }}</div>
-          <span class="eyebrow">{{ specialization.name }}</span>
-          <h1>Dr. {{ doctor_user.full_name }}</h1>
-          <p class="lead">{{ doctor.qualification or 'Medical professional' }}</p>
-          <div class="stats-row">
-            <div><strong>{{ doctor.experience_years }}</strong><span>Years experience</span></div>
-            <div><strong>₹{{ doctor.consultation_fee }}</strong><span>Consultation</span></div>
-          </div>
-          <div class="profile-section"><h3>Clinic</h3><p>{{ doctor.clinic_address or 'Vijayvargiya Clinic, Jaipur' }}</p></div>
-          {% if doctor.bio %}<div class="profile-section"><h3>About</h3><p>{{ doctor.bio }}</p></div>{% endif %}
+
+            <div class="profile-avatar">
+                {{ doctor_user.full_name[:1]|upper }}
+            </div>
+
+            <span class="eyebrow">
+                {{ specialization.name }}
+            </span>
+
+            <h1>
+                Dr. {{ doctor_user.full_name }}
+            </h1>
+
+            <p class="lead">
+                {{ doctor.qualification or
+                   'Qualified medical professional' }}
+            </p>
+
+
+            <div class="stats-row">
+
+                <div>
+                    <strong>
+                        {{ doctor.experience_years }}
+                    </strong>
+
+                    <span>
+                        Years experience
+                    </span>
+                </div>
+
+                <div>
+                    <strong>
+                        ₹{{ doctor.consultation_fee }}
+                    </strong>
+
+                    <span>
+                        Consultation
+                    </span>
+                </div>
+
+            </div>
+
+
+            <!-- CLINIC -->
+
+            <div class="profile-section">
+
+                <span class="profile-section-label">
+                    Clinic
+                </span>
+
+                <h3>
+                    Vijayvargiya Clinic
+                </h3>
+
+                <p>
+                    {{ doctor.clinic_address or
+                       'Vijayvargiya Clinic, Jaipur' }}
+                </p>
+
+            </div>
+
+
+            <!-- SPECIALIZATION -->
+
+            <div class="profile-section">
+
+                <span class="profile-section-label">
+                    Specialty
+                </span>
+
+                <h3>
+                    {{ specialization.name }}
+                </h3>
+
+                <p>
+                    Consultation and care related to
+                    {{ specialization.name.lower() }}.
+                </p>
+
+            </div>
+
+
+            <!-- ABOUT -->
+
+            {% if doctor.bio %}
+
+            <div class="profile-section">
+
+                <span class="profile-section-label">
+                    About the doctor
+                </span>
+
+                <h3>
+                    Professional profile
+                </h3>
+
+                <p>
+                    {{ doctor.bio }}
+                </p>
+
+            </div>
+
+            {% endif %}
+
         </section>
 
+
+        <!-- APPOINTMENT SECTION -->
+
         <section class="slots-card">
-          <div class="section-head compact"><div><span class="eyebrow">Appointments</span><h2>Choose a time</h2></div></div>
-          {% if slots %}
-            <div class="slot-list">
-              {% for slot in slots %}
-              <div class="slot-row">
-                <div><strong>{{ slot.slot_date.strftime('%d %b %Y') }}</strong><span>{{ slot.start_time.strftime('%I:%M %p') }} - {{ slot.end_time.strftime('%I:%M %p') }}</span></div>
-                <a class="btn btn-primary" href="/appointments/book?slot_id={{ slot.id }}">Book</a>
-              </div>
-              {% endfor %}
+
+            <div class="section-head compact">
+
+                <div>
+
+                    <span class="eyebrow">
+                        Appointments
+                    </span>
+
+                    <h2>
+                        Available appointments
+                    </h2>
+
+                    <p>
+                        Select a date and time to book your
+                        consultation with Dr. {{ doctor_user.full_name }}.
+                    </p>
+
+                </div>
+
             </div>
-          {% else %}
-            <div class="empty-mini"><h3>No available slots</h3><p>This doctor has no available appointments in the current schedule.</p></div>
-          {% endif %}
+
+
+            {% if slots %}
+
+            <div class="slot-list">
+
+                {% for slot in slots %}
+
+                <article class="slot-row">
+
+                    <div class="slot-information">
+
+                        <span class="slot-date-label">
+                            {{ slot.slot_date.strftime('%A') }}
+                        </span>
+
+                        <strong>
+                            {{ slot.slot_date.strftime('%d %b %Y') }}
+                        </strong>
+
+                        <span class="slot-time">
+                            {{ slot.start_time.strftime('%I:%M %p') }}
+                            -
+                            {{ slot.end_time.strftime('%I:%M %p') }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="slot-action">
+
+                        <span class="slot-status">
+                            Available
+                        </span>
+
+                        <a
+                            class="btn btn-primary"
+                            href="/appointments/book?slot_id={{ slot.id }}"
+                        >
+                            Book Appointment
+                        </a>
+
+                    </div>
+
+                </article>
+
+                {% endfor %}
+
+            </div>
+
+
+            {% else %}
+
+            <div class="empty-mini">
+
+                <div class="empty-state-icon">
+                    —
+                </div>
+
+                <h3>
+                    No available appointments
+                </h3>
+
+                <p>
+                    This doctor currently has no available
+                    appointments in the current schedule.
+                </p>
+
+                <a
+                    class="btn btn-secondary"
+                    href="/doctors"
+                >
+                    Choose Another Doctor
+                </a>
+
+            </div>
+
+            {% endif %}
+
         </section>
-      </div>
+
+    </div>
+
+
+    <!-- BOOKING INFORMATION -->
+
+    <section class="booking-info-banner">
+
+        <div>
+
+            <span class="eyebrow">
+                Appointment information
+            </span>
+
+            <h2>
+                Choose a convenient time for your consultation.
+            </h2>
+
+            <p>
+                If you are not signed in, the clinic will ask
+                you to log in before completing your booking.
+            </p>
+
+        </div>
+
+        <a
+            class="btn btn-secondary"
+            href="/doctors"
+        >
+            Browse Doctors
+        </a>
+
+    </section>
+
     {% endif %}
-  </div>
+
+</div>
+```
+
 </main>
+
+<footer class="site-footer">
+
+```
+<div class="container">
+
+    <p>
+        © 2026 Vijayvargiya Clinic. All rights reserved.
+    </p>
+
+</div>
+```
+
+</footer>
+
 </body>
 </html>
