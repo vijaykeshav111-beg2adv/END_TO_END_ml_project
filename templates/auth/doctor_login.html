@@ -1,0 +1,90 @@
+```html
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Doctor Login · Vijayvargiya Clinic</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body class="auth-page">
+
+<div class="auth-shell">
+
+    <a class="brand auth-brand" href="/">
+        <span class="brand-mark">+</span>
+        <span>Vijayvargiya Clinic</span>
+    </a>
+
+    <div class="form-card auth-card">
+
+        <span class="eyebrow">Doctor Portal</span>
+
+        <h1>Doctor Login</h1>
+
+        <p>
+            Login to access your doctor dashboard
+            and manage appointments.
+        </p>
+
+        {% if error %}
+        <div class="alert alert-error">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <form
+            method="post"
+            action="/doctor/login"
+            class="form-stack"
+        >
+
+            <label>
+                Email
+
+                <input
+                    type="email"
+                    name="email"
+                    autocomplete="email"
+                    required
+                >
+            </label>
+
+            <label>
+                Password
+
+                <input
+                    type="password"
+                    name="password"
+                    autocomplete="current-password"
+                    required
+                >
+            </label>
+
+            <button
+                class="btn btn-primary btn-block"
+                type="submit"
+            >
+                Login as Doctor
+            </button>
+
+        </form>
+
+        <p class="form-footer">
+            Patient?
+            <a href="/login">
+                Patient Login
+            </a>
+        </p>
+
+    </div>
+
+</div>
+
+</body>
+</html>
+```

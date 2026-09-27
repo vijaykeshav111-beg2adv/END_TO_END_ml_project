@@ -167,7 +167,7 @@ def login_redirect(
 
 
 # ============================================================
-# SIGNUP PAGE
+# PATIENT SIGNUP PAGE
 # ============================================================
 
 @router.get(
@@ -189,7 +189,7 @@ async def signup_page(
 
 
 # ============================================================
-# SIGNUP
+# PATIENT SIGNUP
 # ============================================================
 
 @router.post(
@@ -443,14 +443,14 @@ async def signup_patient(
 
 
 # ============================================================
-# LOGIN PAGE
+# PATIENT LOGIN PAGE
 # ============================================================
 
 @router.get(
     "/login",
     response_class=HTMLResponse
 )
-async def login_page(
+async def patient_login_page(
     request: Request,
     next: str | None = Query(None)
 ):
@@ -469,14 +469,14 @@ async def login_page(
 
 
 # ============================================================
-# LOGIN
+# PATIENT LOGIN
 # ============================================================
 
 @router.post(
     "/login",
     response_class=HTMLResponse
 )
-async def login_user(
+async def patient_login(
     request: Request,
 
     email: str = Form(...),
@@ -490,10 +490,6 @@ async def login_user(
 
     email = email.strip().lower()
 
-    # --------------------------------------------------------
-    # FIND USER
-    # --------------------------------------------------------
-
     user = (
         db.query(User)
         .filter(
@@ -502,25 +498,29 @@ async def login_user(
         .first()
     )
 
-    # --------------------------------------------------------
-    # USER NOT FOUND
-    # --------------------------------------------------------
-
     if not user:
 
         return templates.TemplateResponse(
             request,
             "auth/login.html",
             {
-                "error": "Invalid email or password.",
+                "error": "Invalid patient email or password.",
                 "next": next or ""
             },
             status_code=401
         )
 
-    # --------------------------------------------------------
-    # PASSWORD
-    # --------------------------------------------------------
+    if user.role != "patient":
+
+        return templates.TemplateResponse(
+            request,
+            "auth/login.html",
+            {
+                "error": "This login is only for patients. Doctors must use the doctor login.",
+                "next": next or ""
+            },
+            status_code=403
+        )
 
     if not verify_password(
         password,
@@ -531,94 +531,158 @@ async def login_user(
             request,
             "auth/login.html",
             {
-                "error": "Invalid email or password.",
+                "error": "Invalid patient email or password.",
                 "next": next or ""
             },
             status_code=401
         )
 
-    # --------------------------------------------------------
-    # SUPPORTED ROLES
-    # --------------------------------------------------------
-
-    allowed_roles = {
-        "patient",
-        "doctor",
-    }
-
-    if user.role not in allowed_roles:
-
-        return templates.TemplateResponse(
-            request,
-            "auth/login.html",
-            {
-                "error": (
-                    "This account type cannot "
-                    "use this login."
-                ),
-                "next": next or ""
-            },
-            status_code=403
+    destination = (
+        next
+        or request.session.get(
+            "post_login_redirect"
         )
-
-    # --------------------------------------------------------
-    # PATIENT DESTINATION
-    # --------------------------------------------------------
-
-    if user.role == "patient":
-
-        destination = (
-            next
-            or request.session.get(
-                "post_login_redirect"
-            )
-            or "/patient/dashboard"
-        )
-
-    # --------------------------------------------------------
-    # DOCTOR DESTINATION
-    # --------------------------------------------------------
-
-    else:
-
-        destination = (
-            next
-            or request.session.get(
-                "post_login_redirect"
-            )
-            or "/doctor/dashboard"
-        )
-
-    # --------------------------------------------------------
-    # PREVENT EXTERNAL REDIRECTS
-    # --------------------------------------------------------
+        or "/patient/dashboard"
+    )
 
     if not destination.startswith("/"):
-        destination = (
-            "/doctor/dashboard"
-            if user.role == "doctor"
-            else "/patient/dashboard"
-        )
 
-    # --------------------------------------------------------
-    # CREATE SESSION
-    # --------------------------------------------------------
+        destination = "/patient/dashboard"
 
     request.session.clear()
 
     request.session["user_id"] = user.id
 
-    request.session["role"] = user.role
+    request.session["role"] = "patient"
 
     logger.info(
-        "User logged in. user_id=%s role=%s",
-        user.id,
-        user.role
+        "Patient logged in. user_id=%s",
+        user.id
     )
 
-    # --------------------------------------------------------
-    # REDIRECT
-    # --------------------------------------------------------
+    return RedirectResponse(
+        destination,
+        status_code=303
+    )
+
+
+# ============================================================
+# DOCTOR LOGIN PAGE
+# ============================================================
+
+@router.get(
+    "/doctor/login",
+    response_class=HTMLResponse
+)
+async def doctor_login_page(
+    request: Request,
+    next: str | None = Query(None)
+):
+
+    if next and next.startswith("/"):
+        request.session["doctor_post_login_redirect"] = next
+
+    return templates.TemplateResponse(
+        request,
+        "auth/doctor_login.html",
+        {
+            "error": None,
+            "next": next or ""
+        }
+    )
+
+
+# ============================================================
+# DOCTOR LOGIN
+# ============================================================
+
+@router.post(
+    "/doctor/login",
+    response_class=HTMLResponse
+)
+async def doctor_login(
+    request: Request,
+
+    email: str = Form(...),
+
+    password: str = Form(...),
+
+    next: str | None = Form(None),
+
+    db: Session = Depends(get_db)
+):
+
+    email = email.strip().lower()
+
+    user = (
+        db.query(User)
+        .filter(
+            User.email == email
+        )
+        .first()
+    )
+
+    if not user:
+
+        return templates.TemplateResponse(
+            request,
+            "auth/doctor_login.html",
+            {
+                "error": "Invalid doctor email or password.",
+                "next": next or ""
+            },
+            status_code=401
+        )
+
+    if user.role != "doctor":
+
+        return templates.TemplateResponse(
+            request,
+            "auth/doctor_login.html",
+            {
+                "error": "This login is only for doctors. Patients must use the patient login.",
+                "next": next or ""
+            },
+            status_code=403
+        )
+
+    if not verify_password(
+        password,
+        user.password_hash
+    ):
+
+        return templates.TemplateResponse(
+            request,
+            "auth/doctor_login.html",
+            {
+                "error": "Invalid doctor email or password.",
+                "next": next or ""
+            },
+            status_code=401
+        )
+
+    destination = (
+        next
+        or request.session.get(
+            "doctor_post_login_redirect"
+        )
+        or "/doctor/dashboard"
+    )
+
+    if not destination.startswith("/"):
+
+        destination = "/doctor/dashboard"
+
+    request.session.clear()
+
+    request.session["user_id"] = user.id
+
+    request.session["role"] = "doctor"
+
+    logger.info(
+        "Doctor logged in. user_id=%s",
+        user.id
+    )
 
     return RedirectResponse(
         destination,
