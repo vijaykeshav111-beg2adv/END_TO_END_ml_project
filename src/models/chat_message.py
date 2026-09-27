@@ -16,26 +16,30 @@ class ChatMessage(Base):
     id = Column(
         Integer,
         primary_key=True,
-        index=True
+        index=True,
     )
 
     session_id = Column(
         Integer,
         ForeignKey("chat_sessions.id"),
-        nullable=False
+        nullable=False,
     )
 
     role = Column(
-        Enum("user", "assistant", "system"),
-        nullable=False
+        Enum(
+            "user",
+            "assistant",
+            "system",
+        ),
+        nullable=False,
     )
 
     message = Column(
         Text,
-        nullable=False
+        nullable=False,
     )
 
     created_at = Column(
         DateTime,
-        server_default=func.now()
+        server_default=func.now(),
     )

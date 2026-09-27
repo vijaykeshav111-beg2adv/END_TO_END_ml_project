@@ -14,22 +14,22 @@ class ChatSession(Base):
     id = Column(
         Integer,
         primary_key=True,
-        index=True
+        index=True,
     )
 
     patient_id = Column(
         Integer,
         ForeignKey("users.id"),
-        nullable=False
+        nullable=False,
     )
 
     created_at = Column(
         DateTime,
-        server_default=func.now()
+        server_default=func.now(),
     )
 
     updated_at = Column(
         DateTime,
         server_default=func.now(),
-        onupdate=func.now()
+        onupdate=func.now(),
     )

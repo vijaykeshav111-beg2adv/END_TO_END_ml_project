@@ -61,6 +61,8 @@ from routers.auth import (
     get_current_doctor,
 )
 
+from routers.ai import router as ai_router
+
 
 # ============================================================
 # LOGGER
@@ -112,7 +114,8 @@ templates = Jinja2Templates(
     directory="templates"
 )
 
-
+# AI ROUTER
+app.include_router(ai_router)
 # ============================================================
 # AUTH ROUTER
 # ============================================================
@@ -1583,17 +1586,29 @@ async def pretrained_nlp_analysis(
 # ============================================================
 # HEALTH CHECK
 # ============================================================
+@app.get(
+    "/ai-chat",
+    response_class=HTMLResponse
+)
+async def ai_chat_page(
+    request: Request
+):
 
-@app.get("/health")
-async def health_check():
+    patient_id = request.session.get("user_id")
 
-    return {
-        "status": "ok",
-        "application":
-            "Vijayvargiya Clinic",
-    }
+    if not patient_id:
+        return RedirectResponse(
+            "/login",
+            status_code=303
+        )
 
-
+    return templates.TemplateResponse(
+        request=request,
+        name="ai/chat.html",
+        context={
+            "patient_id": patient_id
+        }
+    )
 # ============================================================
 # RUN
 # ============================================================
