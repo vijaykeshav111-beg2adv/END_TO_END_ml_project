@@ -2,6 +2,7 @@ import sys
 import uvicorn
 
 from datetime import date
+from urllib.parse import quote
 
 from fastapi import (
     FastAPI,
@@ -57,6 +58,7 @@ from nlp_pretrained.sentiment_analyzer import (
 from routers.auth import (
     router as auth_router,
     get_current_patient,
+    get_current_doctor,
 )
 
 
@@ -84,10 +86,7 @@ app = FastAPI(
 
 app.add_middleware(
     SessionMiddleware,
-    secret_key=(
-        "vijayvargiya-clinic-"
-        "development-secret-change-later"
-    ),
+    secret_key="vijayvargiya-clinic-development-secret-change-later",
     max_age=60 * 60 * 24 * 7,
     same_site="lax",
     https_only=False,
@@ -118,9 +117,7 @@ templates = Jinja2Templates(
 # AUTH ROUTER
 # ============================================================
 
-app.include_router(
-    auth_router
-)
+app.include_router(auth_router)
 
 
 # ============================================================
@@ -136,9 +133,7 @@ async def home(
     db: Session = Depends(get_db),
 ):
 
-    logger.info(
-        "Clinic homepage accessed"
-    )
+    logger.info("Clinic homepage accessed")
 
     try:
 
@@ -233,10 +228,6 @@ async def patient_dashboard(
     db: Session = Depends(get_db),
 ):
 
-    # --------------------------------------------------------
-    # CURRENT PATIENT
-    # --------------------------------------------------------
-
     patient = get_current_patient(
         request,
         db,
@@ -267,17 +258,12 @@ async def patient_dashboard(
         .all()
     )
 
-    # This MUST be created before template rendering.
     appointment_data = []
-
-    # --------------------------------------------------------
-    # BUILD APPOINTMENT DATA
-    # --------------------------------------------------------
 
     for appointment in appointments:
 
         # ----------------------------------------------------
-        # GET DOCTOR + DOCTOR USER + SPECIALIZATION
+        # DOCTOR
         # ----------------------------------------------------
 
         doctor_result = (
@@ -303,7 +289,7 @@ async def patient_dashboard(
         )
 
         # ----------------------------------------------------
-        # GET EXACT SLOT
+        # SLOT
         # ----------------------------------------------------
 
         slot = (
@@ -314,10 +300,6 @@ async def patient_dashboard(
             )
             .first()
         )
-
-        # ----------------------------------------------------
-        # ADD APPOINTMENT DATA
-        # ----------------------------------------------------
 
         if doctor_result:
 
@@ -381,10 +363,6 @@ async def patient_dashboard(
             }
         )
 
-    # --------------------------------------------------------
-    # RENDER DASHBOARD
-    # --------------------------------------------------------
-
     return templates.TemplateResponse(
         request,
         "patient/dashboard.html",
@@ -393,6 +371,349 @@ async def patient_dashboard(
             "appointments": appointment_data,
             "doctors": doctors,
         },
+    )
+
+
+# ============================================================
+# DOCTOR DASHBOARD
+# ============================================================
+
+@app.get(
+    "/doctor/dashboard",
+    response_class=HTMLResponse,
+)
+async def doctor_dashboard(
+    request: Request,
+    db: Session = Depends(get_db),
+):
+
+    # --------------------------------------------------------
+    # CURRENT DOCTOR
+    # --------------------------------------------------------
+
+    doctor_user = get_current_doctor(
+        request,
+        db,
+    )
+
+    if not doctor_user:
+
+        request.session.clear()
+
+        return RedirectResponse(
+            "/login",
+            status_code=303,
+        )
+
+    # --------------------------------------------------------
+    # DOCTOR PROFILE
+    # --------------------------------------------------------
+
+    doctor_result = (
+        db.query(
+            Doctor,
+            Specialization,
+        )
+        .join(
+            Specialization,
+            Doctor.specialization_id
+            == Specialization.id,
+        )
+        .filter(
+            Doctor.user_id
+            == doctor_user.id
+        )
+        .first()
+    )
+
+    if not doctor_result:
+
+        return HTMLResponse(
+            content="""
+            <h2>Doctor profile not found</h2>
+            <p>
+                Your doctor account is not connected
+                to a doctor profile.
+            </p>
+            """,
+            status_code=404,
+        )
+
+    doctor, specialization = doctor_result
+
+    # --------------------------------------------------------
+    # APPOINTMENTS
+    # --------------------------------------------------------
+
+    appointments = (
+        db.query(Appointment)
+        .filter(
+            Appointment.doctor_id
+            == doctor.id
+        )
+        .order_by(
+            Appointment.created_at.desc()
+        )
+        .all()
+    )
+
+    # --------------------------------------------------------
+    # STATISTICS
+    # --------------------------------------------------------
+
+    total_appointments = len(
+        appointments
+    )
+
+    pending_appointments = sum(
+        1
+        for appointment in appointments
+        if appointment.status == "pending"
+    )
+
+    confirmed_appointments = sum(
+        1
+        for appointment in appointments
+        if appointment.status == "confirmed"
+    )
+
+    completed_appointments = sum(
+        1
+        for appointment in appointments
+        if appointment.status == "completed"
+    )
+    cancelled_appointments = sum(
+    1
+    for appointment in appointments
+    if appointment.status == "cancelled"
+    )
+    
+    
+    # --------------------------------------------------------
+    # APPOINTMENT DATA
+    # --------------------------------------------------------
+
+    appointment_data = []
+
+    for appointment in appointments:
+
+        patient = (
+            db.query(User)
+            .filter(
+                User.id
+                == appointment.patient_id
+            )
+            .first()
+        )
+
+        slot = (
+            db.query(DoctorSlot)
+            .filter(
+                DoctorSlot.id
+                == appointment.slot_id
+            )
+            .first()
+        )
+
+        appointment_data.append(
+            {
+                "appointment": appointment,
+                "patient": patient,
+                "slot": slot,
+            }
+        )
+
+    # --------------------------------------------------------
+    # TODAY'S APPOINTMENTS
+    # --------------------------------------------------------
+
+    today_appointments = []
+
+    for item in appointment_data:
+
+        slot = item["slot"]
+
+        if (
+            slot
+            and slot.slot_date == date.today()
+        ):
+
+            today_appointments.append(
+                item
+            )
+
+    # --------------------------------------------------------
+    # RENDER DASHBOARD
+    # --------------------------------------------------------
+
+    return templates.TemplateResponse(
+        request,
+        "doctor/dashboard.html",
+        {
+            "doctor_user": doctor_user,
+            "doctor": doctor,
+            "specialization": specialization,
+
+            "appointments": appointment_data,
+
+            "today_appointments":
+                today_appointments,
+
+            "total_appointments":
+                total_appointments,
+
+            "pending_appointments":
+                pending_appointments,
+
+            "confirmed_appointments":
+                confirmed_appointments,
+
+            "completed_appointments":
+                completed_appointments,
+            "cancelled_appointments":
+                cancelled_appointments,
+        },
+    )
+
+
+# ============================================================
+# UPDATE APPOINTMENT STATUS
+# ============================================================
+
+@app.post(
+    "/doctor/appointments/{appointment_id}/status"
+)
+async def update_appointment_status(
+    appointment_id: int,
+    status: str = Form(...),
+    request: Request = None,
+    db: Session = Depends(get_db),
+):
+
+    doctor_user = get_current_doctor(
+        request,
+        db,
+    )
+
+    if not doctor_user:
+
+        return RedirectResponse(
+            "/login",
+            status_code=303,
+        )
+
+    # --------------------------------------------------------
+    # DOCTOR
+    # --------------------------------------------------------
+
+    doctor = (
+        db.query(Doctor)
+        .filter(
+            Doctor.user_id
+            == doctor_user.id
+        )
+        .first()
+    )
+
+    if not doctor:
+
+        return HTMLResponse(
+            "Doctor profile not found.",
+            status_code=404,
+        )
+
+    # --------------------------------------------------------
+    # APPOINTMENT
+    # --------------------------------------------------------
+
+    appointment = (
+        db.query(Appointment)
+        .filter(
+            Appointment.id
+            == appointment_id,
+            Appointment.doctor_id
+            == doctor.id,
+        )
+        .first()
+    )
+
+    if not appointment:
+
+        return HTMLResponse(
+            "Appointment not found.",
+            status_code=404,
+        )
+
+    # --------------------------------------------------------
+    # VALID STATUS
+    # --------------------------------------------------------
+
+    allowed_statuses = {
+        "pending",
+        "confirmed",
+        "completed",
+        "cancelled",
+    }
+
+    if status not in allowed_statuses:
+
+        return HTMLResponse(
+            "Invalid appointment status.",
+            status_code=400,
+        )
+
+    # --------------------------------------------------------
+    # VALID TRANSITIONS
+    # --------------------------------------------------------
+
+    current_status = appointment.status
+
+    valid_transitions = {
+        "pending": {
+            "confirmed",
+            "cancelled",
+        },
+        "confirmed": {
+            "completed",
+            "cancelled",
+        },
+        "completed": set(),
+        "cancelled": set(),
+    }
+
+    if status not in valid_transitions.get(
+        current_status,
+        set(),
+    ):
+
+        return HTMLResponse(
+            f"Cannot change appointment "
+            f"from '{current_status}' "
+            f"to '{status}'.",
+            status_code=400,
+        )
+
+    # --------------------------------------------------------
+    # UPDATE
+    # --------------------------------------------------------
+
+    appointment.status = status
+
+    db.commit()
+
+    logger.info(
+        "Appointment status updated. "
+        "appointment_id=%s doctor_id=%s "
+        "old_status=%s new_status=%s",
+        appointment.id,
+        doctor.id,
+        current_status,
+        status,
+    )
+
+    return RedirectResponse(
+        "/doctor/dashboard",
+        status_code=303,
     )
 
 
@@ -410,19 +731,9 @@ async def doctors_page(
     db: Session = Depends(get_db),
 ):
 
-    logger.info(
-        "Doctors page accessed. "
-        "Specialization=%s",
-        specialization,
-    )
-
     try:
 
         selected_specialization = None
-
-        # ----------------------------------------------------
-        # SELECTED SPECIALIZATION
-        # ----------------------------------------------------
 
         if specialization:
 
@@ -434,10 +745,6 @@ async def doctors_page(
                 )
                 .first()
             )
-
-        # ----------------------------------------------------
-        # DOCTOR QUERY
-        # ----------------------------------------------------
 
         query = (
             db.query(
@@ -528,17 +835,7 @@ async def doctor_profile(
     db: Session = Depends(get_db),
 ):
 
-    logger.info(
-        "Doctor profile accessed. "
-        "Doctor ID=%s",
-        doctor_id,
-    )
-
     try:
-
-        # ----------------------------------------------------
-        # DOCTOR + USER + SPECIALIZATION
-        # ----------------------------------------------------
 
         result = (
             db.query(
@@ -582,10 +879,6 @@ async def doctor_profile(
             specialization,
         ) = result
 
-        # ----------------------------------------------------
-        # AVAILABLE SLOTS
-        # ----------------------------------------------------
-
         slots = (
             db.query(DoctorSlot)
             .filter(
@@ -601,12 +894,6 @@ async def doctor_profile(
                 DoctorSlot.start_time.asc(),
             )
             .all()
-        )
-
-        logger.info(
-            "Doctor ID %s has %s available slots",
-            doctor.id,
-            len(slots),
         )
 
         return templates.TemplateResponse(
@@ -661,16 +948,6 @@ async def appointment_booking_page(
     db: Session = Depends(get_db),
 ):
 
-    logger.info(
-        "Appointment booking page accessed. "
-        "slot_id=%s",
-        slot_id,
-    )
-
-    # --------------------------------------------------------
-    # LOGIN CHECK
-    # --------------------------------------------------------
-
     patient = get_current_patient(
         request,
         db,
@@ -690,7 +967,8 @@ async def appointment_booking_page(
             ] = booking_url
 
             return RedirectResponse(
-                f"/login?next={booking_url}",
+                f"/login?next="
+                f"{quote(booking_url, safe='')}",
                 status_code=303,
             )
 
@@ -699,28 +977,16 @@ async def appointment_booking_page(
             status_code=303,
         )
 
-    # --------------------------------------------------------
-    # SLOT ID CHECK
-    # --------------------------------------------------------
-
     if not slot_id:
 
         return HTMLResponse(
-            content="""
+            """
             <h2>Appointment slot missing</h2>
-            <p>
-                Please select a valid appointment slot.
-            </p>
-            <a href="/doctors">
-                Browse Doctors
-            </a>
+            <p>Please select a valid appointment slot.</p>
+            <a href="/doctors">Browse Doctors</a>
             """,
             status_code=400,
         )
-
-    # --------------------------------------------------------
-    # GET SLOT
-    # --------------------------------------------------------
 
     slot = (
         db.query(DoctorSlot)
@@ -734,7 +1000,7 @@ async def appointment_booking_page(
     if not slot:
 
         return HTMLResponse(
-            content="""
+            """
             <h2>Slot not available</h2>
             <p>
                 This appointment slot is already
@@ -746,10 +1012,6 @@ async def appointment_booking_page(
             """,
             status_code=409,
         )
-
-    # --------------------------------------------------------
-    # GET DOCTOR
-    # --------------------------------------------------------
 
     result = (
         db.query(
@@ -775,7 +1037,7 @@ async def appointment_booking_page(
     if not result:
 
         return HTMLResponse(
-            content="""
+            """
             <h2>Doctor not found</h2>
             <a href="/doctors">
                 Back to Doctors
@@ -820,18 +1082,7 @@ async def create_appointment(
     db: Session = Depends(get_db),
 ):
 
-    logger.info(
-        "Appointment creation requested. "
-        "slot_id=%s type=%s",
-        slot_id,
-        appointment_type,
-    )
-
     try:
-
-        # ----------------------------------------------------
-        # CURRENT PATIENT
-        # ----------------------------------------------------
 
         patient = get_current_patient(
             request,
@@ -850,12 +1101,13 @@ async def create_appointment(
             ] = booking_url
 
             return RedirectResponse(
-                f"/login?next={booking_url}",
+                f"/login?next="
+                f"{quote(booking_url, safe='')}",
                 status_code=303,
             )
 
         # ----------------------------------------------------
-        # APPOINTMENT TYPE
+        # TYPE
         # ----------------------------------------------------
 
         allowed_types = {
@@ -866,7 +1118,7 @@ async def create_appointment(
         if appointment_type not in allowed_types:
 
             return HTMLResponse(
-                content="""
+                """
                 <h2>Invalid appointment type</h2>
                 <p>
                     Please select online or in-person.
@@ -879,7 +1131,7 @@ async def create_appointment(
             )
 
         # ----------------------------------------------------
-        # PROBLEM SUMMARY
+        # PROBLEM
         # ----------------------------------------------------
 
         problem_summary = (
@@ -889,7 +1141,7 @@ async def create_appointment(
         if not problem_summary:
 
             return HTMLResponse(
-                content="""
+                """
                 <h2>Problem description required</h2>
                 <p>
                     Please describe the reason
@@ -903,7 +1155,7 @@ async def create_appointment(
             )
 
         # ----------------------------------------------------
-        # GET SLOT
+        # SLOT
         # ----------------------------------------------------
 
         slot = (
@@ -920,12 +1172,8 @@ async def create_appointment(
             db.rollback()
 
             return HTMLResponse(
-                content="""
+                """
                 <h2>Slot not found</h2>
-                <p>
-                    This appointment slot does
-                    not exist.
-                </p>
                 <a href="/doctors">
                     Back to Doctors
                 </a>
@@ -933,21 +1181,15 @@ async def create_appointment(
                 status_code=404,
             )
 
-        # ----------------------------------------------------
-        # CHECK SLOT STATUS
-        # ----------------------------------------------------
-
         if slot.status != "available":
 
             db.rollback()
 
             return HTMLResponse(
-                content="""
+                """
                 <h2>Slot already booked</h2>
                 <p>
-                    Someone has already booked
-                    this slot. Please choose
-                    another time.
+                    Please choose another time.
                 </p>
                 <a href="/doctors">
                     Choose another slot
@@ -957,7 +1199,7 @@ async def create_appointment(
             )
 
         # ----------------------------------------------------
-        # DUPLICATE APPOINTMENT CHECK
+        # DUPLICATE CHECK
         # ----------------------------------------------------
 
         existing_appointment = (
@@ -976,7 +1218,7 @@ async def create_appointment(
             db.rollback()
 
             return HTMLResponse(
-                content="""
+                """
                 <h2>Appointment already exists</h2>
                 <p>
                     You have already booked
@@ -990,7 +1232,7 @@ async def create_appointment(
             )
 
         # ----------------------------------------------------
-        # CREATE APPOINTMENT
+        # CREATE
         # ----------------------------------------------------
 
         appointment = Appointment(
@@ -1004,36 +1246,14 @@ async def create_appointment(
 
         db.add(appointment)
 
-        # ----------------------------------------------------
-        # MARK SLOT BOOKED
-        # ----------------------------------------------------
-
         slot.status = "booked"
-
-        # ----------------------------------------------------
-        # COMMIT
-        # ----------------------------------------------------
 
         db.commit()
 
-        db.refresh(
-            appointment
-        )
-
-        logger.info(
-            "Appointment created successfully. "
-            "appointment_id=%s "
-            "patient_id=%s "
-            "doctor_id=%s "
-            "slot_id=%s",
-            appointment.id,
-            patient.id,
-            slot.doctor_id,
-            slot.id,
-        )
+        db.refresh(appointment)
 
         # ----------------------------------------------------
-        # GET DOCTOR INFORMATION
+        # DOCTOR INFORMATION
         # ----------------------------------------------------
 
         result = (
@@ -1071,10 +1291,6 @@ async def create_appointment(
             specialization,
         ) = result
 
-        # ----------------------------------------------------
-        # SUCCESS PAGE
-        # ----------------------------------------------------
-
         return templates.TemplateResponse(
             request,
             "appointments/success.html",
@@ -1093,7 +1309,7 @@ async def create_appointment(
         db.rollback()
 
         return HTMLResponse(
-            content="""
+            """
             <h2>Appointment could not be booked</h2>
             <p>
                 This appointment slot was already
@@ -1160,17 +1376,6 @@ async def predict_result(
 ):
 
     try:
-
-        logger.info(
-            "Prediction request received. "
-            "age=%s gender=%s fever=%s "
-            "cough=%s city=%s",
-            age,
-            gender,
-            fever,
-            cough,
-            city,
-        )
 
         custom_data = CustomData(
             age=age,
@@ -1277,7 +1482,7 @@ async def pretrained_nlp_analysis(
             )
 
         # ----------------------------------------------------
-        # POS TAGGING
+        # POS
         # ----------------------------------------------------
 
         pos_tags = get_pos_tags(
@@ -1285,7 +1490,7 @@ async def pretrained_nlp_analysis(
         )
 
         # ----------------------------------------------------
-        # NAMED ENTITY RECOGNITION
+        # NER
         # ----------------------------------------------------
 
         entities = extract_entities(
@@ -1334,10 +1539,6 @@ async def pretrained_nlp_analysis(
 
                 similar_words = []
 
-        # ----------------------------------------------------
-        # RESULT
-        # ----------------------------------------------------
-
         result = {
             "query": query,
             "pos_tags": pos_tags,
@@ -1383,9 +1584,7 @@ async def pretrained_nlp_analysis(
 # HEALTH CHECK
 # ============================================================
 
-@app.get(
-    "/health"
-)
+@app.get("/health")
 async def health_check():
 
     return {

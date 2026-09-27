@@ -1,3 +1,4 @@
+
 import sys
 from datetime import date
 from urllib.parse import quote
@@ -15,15 +16,34 @@ from src.logger import get_logger
 from src.models import User
 
 
+# ============================================================
+# ROUTER
+# ============================================================
+
 router = APIRouter(
     tags=["Authentication"]
 )
 
+
+# ============================================================
+# LOGGER
+# ============================================================
+
 logger = get_logger(__name__)
+
+
+# ============================================================
+# TEMPLATES
+# ============================================================
 
 templates = Jinja2Templates(
     directory="templates"
 )
+
+
+# ============================================================
+# PASSWORD
+# ============================================================
 
 pwd_context = CryptContext(
     schemes=["bcrypt"],
@@ -31,14 +51,11 @@ pwd_context = CryptContext(
 )
 
 
-# ============================================================
-# PASSWORD HELPERS
-# ============================================================
-
 def _safe_password(password: str) -> str:
     """
     bcrypt supports a maximum of 72 bytes.
     """
+
     raw = password.encode("utf-8")[:72]
 
     return raw.decode(
@@ -48,6 +65,7 @@ def _safe_password(password: str) -> str:
 
 
 def hash_password(password: str) -> str:
+
     return pwd_context.hash(
         _safe_password(password)
     )
@@ -59,12 +77,14 @@ def verify_password(
 ) -> bool:
 
     try:
+
         return pwd_context.verify(
             _safe_password(password),
             hashed_password
         )
 
     except Exception:
+
         return False
 
 
@@ -91,6 +111,34 @@ def get_current_patient(
         .filter(
             User.id == user_id,
             User.role == "patient"
+        )
+        .first()
+    )
+
+
+# ============================================================
+# CURRENT DOCTOR
+# ============================================================
+
+def get_current_doctor(
+    request: Request,
+    db: Session
+):
+
+    user_id = request.session.get("user_id")
+    role = request.session.get("role")
+
+    if not user_id:
+        return None
+
+    if role != "doctor":
+        return None
+
+    return (
+        db.query(User)
+        .filter(
+            User.id == user_id,
+            User.role == "doctor"
         )
         .first()
     )
@@ -240,7 +288,10 @@ async def signup_patient(
             request,
             "auth/signup.html",
             {
-                "error": "Password must contain at least 6 characters.",
+                "error": (
+                    "Password must contain "
+                    "at least 6 characters."
+                ),
                 "form_data": form_data
             },
             status_code=400
@@ -284,7 +335,10 @@ async def signup_patient(
             request,
             "auth/signup.html",
             {
-                "error": "An account with this email already exists.",
+                "error": (
+                    "An account with this "
+                    "email already exists."
+                ),
                 "form_data": form_data
             },
             status_code=400
@@ -310,7 +364,10 @@ async def signup_patient(
                 request,
                 "auth/signup.html",
                 {
-                    "error": "This phone number is already registered.",
+                    "error": (
+                        "This phone number is "
+                        "already registered."
+                    ),
                     "form_data": form_data
                 },
                 status_code=400
@@ -361,7 +418,10 @@ async def signup_patient(
             request,
             "auth/signup.html",
             {
-                "error": "This account information already exists.",
+                "error": (
+                    "This account information "
+                    "already exists."
+                ),
                 "form_data": form_data
             },
             status_code=400
@@ -416,7 +476,7 @@ async def login_page(
     "/login",
     response_class=HTMLResponse
 )
-async def login_patient(
+async def login_user(
     request: Request,
 
     email: str = Form(...),
@@ -430,6 +490,10 @@ async def login_patient(
 
     email = email.strip().lower()
 
+    # --------------------------------------------------------
+    # FIND USER
+    # --------------------------------------------------------
+
     user = (
         db.query(User)
         .filter(
@@ -439,7 +503,7 @@ async def login_patient(
     )
 
     # --------------------------------------------------------
-    # VALIDATE USER
+    # USER NOT FOUND
     # --------------------------------------------------------
 
     if not user:
@@ -454,17 +518,9 @@ async def login_patient(
             status_code=401
         )
 
-    if user.role != "patient":
-
-        return templates.TemplateResponse(
-            request,
-            "auth/login.html",
-            {
-                "error": "This login is for patient accounts.",
-                "next": next or ""
-            },
-            status_code=403
-        )
+    # --------------------------------------------------------
+    # PASSWORD
+    # --------------------------------------------------------
 
     if not verify_password(
         password,
@@ -482,20 +538,67 @@ async def login_patient(
         )
 
     # --------------------------------------------------------
-    # DESTINATION
+    # SUPPORTED ROLES
     # --------------------------------------------------------
 
-    destination = (
-        next
-        or request.session.get(
-            "post_login_redirect"
-        )
-        or "/patient/dashboard"
-    )
+    allowed_roles = {
+        "patient",
+        "doctor",
+    }
 
-    # Prevent external redirects
+    if user.role not in allowed_roles:
+
+        return templates.TemplateResponse(
+            request,
+            "auth/login.html",
+            {
+                "error": (
+                    "This account type cannot "
+                    "use this login."
+                ),
+                "next": next or ""
+            },
+            status_code=403
+        )
+
+    # --------------------------------------------------------
+    # PATIENT DESTINATION
+    # --------------------------------------------------------
+
+    if user.role == "patient":
+
+        destination = (
+            next
+            or request.session.get(
+                "post_login_redirect"
+            )
+            or "/patient/dashboard"
+        )
+
+    # --------------------------------------------------------
+    # DOCTOR DESTINATION
+    # --------------------------------------------------------
+
+    else:
+
+        destination = (
+            next
+            or request.session.get(
+                "post_login_redirect"
+            )
+            or "/doctor/dashboard"
+        )
+
+    # --------------------------------------------------------
+    # PREVENT EXTERNAL REDIRECTS
+    # --------------------------------------------------------
+
     if not destination.startswith("/"):
-        destination = "/patient/dashboard"
+        destination = (
+            "/doctor/dashboard"
+            if user.role == "doctor"
+            else "/patient/dashboard"
+        )
 
     # --------------------------------------------------------
     # CREATE SESSION
@@ -505,7 +608,17 @@ async def login_patient(
 
     request.session["user_id"] = user.id
 
-    request.session["role"] = "patient"
+    request.session["role"] = user.role
+
+    logger.info(
+        "User logged in. user_id=%s role=%s",
+        user.id,
+        user.role
+    )
+
+    # --------------------------------------------------------
+    # REDIRECT
+    # --------------------------------------------------------
 
     return RedirectResponse(
         destination,
@@ -530,3 +643,4 @@ async def logout(
         "/",
         status_code=303
     )
+

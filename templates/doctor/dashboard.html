@@ -1,438 +1,878 @@
 <!DOCTYPE html>
-
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-```
-<title>Doctor Dashboard | Vijayvargiya Clinic</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<link rel="stylesheet" href="/static/style.css">
+    <title>
+        Doctor Dashboard | Vijayvargiya Clinic
+    </title>
 
-<style>
-    .doctor-dashboard {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 40px 20px;
-    }
-
-    .dashboard-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 20px;
-        margin-bottom: 30px;
-    }
-
-    .dashboard-header h1 {
-        margin: 0;
-    }
-
-    .dashboard-header p {
-        margin: 8px 0 0;
-        color: #64748b;
-    }
-
-    .dashboard-actions {
-        display: flex;
-        gap: 10px;
-    }
-
-    .dashboard-actions a {
-        text-decoration: none;
-    }
-
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 18px;
-        margin-bottom: 30px;
-    }
-
-    .stat-card {
-        background: #ffffff;
-        border: 1px solid #e5e7eb;
-        border-radius: 16px;
-        padding: 22px;
-        box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06);
-    }
-
-    .stat-card span {
-        display: block;
-        color: #64748b;
-        font-size: 14px;
-        margin-bottom: 10px;
-    }
-
-    .stat-card strong {
-        font-size: 30px;
-        color: #0f172a;
-    }
-
-    .section-card {
-        background: #ffffff;
-        border: 1px solid #e5e7eb;
-        border-radius: 18px;
-        padding: 24px;
-        box-shadow: 0 6px 20px rgba(15, 23, 42, 0.05);
-        margin-bottom: 25px;
-    }
-
-    .section-card h2 {
-        margin-top: 0;
-        margin-bottom: 20px;
-    }
-
-    .appointment-table-wrapper {
-        overflow-x: auto;
-    }
-
-    .appointment-table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    .appointment-table th,
-    .appointment-table td {
-        padding: 14px 12px;
-        text-align: left;
-        border-bottom: 1px solid #eef2f7;
-    }
-
-    .appointment-table th {
-        color: #64748b;
-        font-size: 13px;
-        font-weight: 600;
-        text-transform: uppercase;
-    }
-
-    .appointment-table td {
-        color: #1e293b;
-    }
-
-    .patient-name {
-        font-weight: 600;
-    }
-
-    .patient-email {
-        display: block;
-        font-size: 12px;
-        color: #94a3b8;
-        margin-top: 3px;
-    }
-
-    .status-badge {
-        display: inline-block;
-        padding: 6px 10px;
-        border-radius: 999px;
-        font-size: 12px;
-        font-weight: 600;
-        text-transform: capitalize;
-    }
-
-    .status-pending {
-        background: #fff7ed;
-        color: #c2410c;
-    }
-
-    .status-confirmed {
-        background: #ecfdf5;
-        color: #047857;
-    }
-
-    .status-completed {
-        background: #eff6ff;
-        color: #1d4ed8;
-    }
-
-    .status-cancelled {
-        background: #fef2f2;
-        color: #b91c1c;
-    }
-
-    .type-badge {
-        color: #475569;
-        font-size: 13px;
-    }
-
-    .empty-state {
-        padding: 40px 20px;
-        text-align: center;
-        color: #64748b;
-    }
-
-    .empty-state strong {
-        display: block;
-        color: #334155;
-        margin-bottom: 6px;
-    }
-
-    .profile-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 18px;
-    }
-
-    .profile-item {
-        background: #f8fafc;
-        border-radius: 12px;
-        padding: 15px;
-    }
-
-    .profile-item small {
-        display: block;
-        color: #64748b;
-        margin-bottom: 5px;
-    }
-
-    .profile-item strong {
-        color: #0f172a;
-    }
-
-    @media (max-width: 900px) {
-        .stats-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-
-    @media (max-width: 650px) {
-        .dashboard-header {
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        .stats-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .profile-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-</style>
-```
+    <link
+        rel="stylesheet"
+        href="/static/style.css"
+    >
 
 </head>
 
+
 <body>
 
-<div class="doctor-dashboard">
-
-```
-<!-- HEADER -->
-<div class="dashboard-header">
-
-    <div>
-        <h1>Doctor Dashboard</h1>
-
-        <p>
-            Welcome,
-            <strong>Dr. {{ doctor_user.full_name }}</strong>
-        </p>
-
-        {% if specialization %}
-            <p>{{ specialization.name }}</p>
-        {% endif %}
-    </div>
-
-    <div class="dashboard-actions">
-        <a href="/doctors/{{ doctor.id }}" class="btn">
-            View Public Profile
-        </a>
-
-        <a href="/logout" class="btn">
-            Logout
-        </a>
-    </div>
-
-</div>
+    <main class="doctor-dashboard">
 
 
-<!-- STATISTICS -->
-<div class="stats-grid">
+        <!-- ==================================================
+             HEADER
+             ================================================== -->
 
-    <div class="stat-card">
-        <span>Total Appointments</span>
-        <strong>{{ total_appointments }}</strong>
-    </div>
+        <header class="dashboard-header">
 
-    <div class="stat-card">
-        <span>Pending</span>
-        <strong>{{ pending_appointments }}</strong>
-    </div>
+            <div class="dashboard-title">
 
-    <div class="stat-card">
-        <span>Confirmed</span>
-        <strong>{{ confirmed_appointments }}</strong>
-    </div>
+                <div class="dashboard-kicker">
+                    VIJAYVARGIYA CLINIC
+                </div>
 
-    <div class="stat-card">
-        <span>Completed</span>
-        <strong>{{ completed_appointments }}</strong>
-    </div>
+                <h1>
+                    Doctor Dashboard
+                </h1>
 
-</div>
+                <p>
+                    Welcome,
+                    <strong>
+                        Dr. {{ doctor_user.full_name }}
+                    </strong>
+                </p>
 
-
-<!-- DOCTOR PROFILE -->
-<div class="section-card">
-
-    <h2>Professional Information</h2>
-
-    <div class="profile-grid">
-
-        <div class="profile-item">
-            <small>Name</small>
-            <strong>Dr. {{ doctor_user.full_name }}</strong>
-        </div>
-
-        <div class="profile-item">
-            <small>Specialization</small>
-            <strong>
                 {% if specialization %}
-                    {{ specialization.name }}
-                {% else %}
-                    Not specified
+
+                    <p class="specialization-text">
+                        {{ specialization.name }}
+                    </p>
+
                 {% endif %}
-            </strong>
-        </div>
 
-        <div class="profile-item">
-            <small>Qualification</small>
-            <strong>
-                {{ doctor.qualification or "Not specified" }}
-            </strong>
-        </div>
-
-        <div class="profile-item">
-            <small>Experience</small>
-            <strong>
-                {{ doctor.experience_years }} years
-            </strong>
-        </div>
-
-        <div class="profile-item">
-            <small>Consultation Fee</small>
-            <strong>
-                ₹{{ doctor.consultation_fee }}
-            </strong>
-        </div>
-
-        <div class="profile-item">
-            <small>Clinic</small>
-            <strong>
-                {{ doctor.clinic_address or "Not specified" }}
-            </strong>
-        </div>
-
-    </div>
-
-</div>
+            </div>
 
 
-<!-- APPOINTMENTS -->
-<div class="section-card">
+            <div class="dashboard-actions">
 
-    <h2>My Appointments</h2>
+                <a
+                    href="/doctors/{{ doctor.id }}"
+                    class="dashboard-btn profile-btn"
+                >
+                    View Public Profile
+                </a>
 
-    {% if appointments %}
+                <a
+                    href="/logout"
+                    class="dashboard-btn logout-btn"
+                >
+                    Logout
+                </a>
 
-    <div class="appointment-table-wrapper">
+            </div>
 
-        <table class="appointment-table">
+        </header>
 
-            <thead>
-                <tr>
-                    <th>Patient</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Type</th>
-                    <th>Problem</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
 
-            <tbody>
 
-            {% for item in appointments %}
+        <!-- ==================================================
+             STATISTICS
+             ================================================== -->
 
-                <tr>
+        <section class="stats-grid">
 
-                    <td>
-                        <span class="patient-name">
-                            {{ item.patient.full_name }}
-                        </span>
 
-                        {% if item.patient.email %}
-                            <span class="patient-email">
-                                {{ item.patient.email }}
-                            </span>
+            <!-- TOTAL -->
+
+            <div class="stat-card total-stat">
+
+                <span>
+                    Total Appointments
+                </span>
+
+                <strong>
+                    {{ total_appointments }}
+                </strong>
+
+            </div>
+
+
+
+            <!-- PENDING -->
+
+            <div class="stat-card pending-stat">
+
+                <span>
+                    Pending
+                </span>
+
+                <strong>
+                    {{ pending_appointments }}
+                </strong>
+
+            </div>
+
+
+
+            <!-- CONFIRMED -->
+
+            <div class="stat-card confirmed-stat">
+
+                <span>
+                    Confirmed
+                </span>
+
+                <strong>
+                    {{ confirmed_appointments }}
+                </strong>
+
+            </div>
+
+
+
+            <!-- COMPLETED -->
+
+            <div class="stat-card completed-stat">
+
+                <span>
+                    Completed
+                </span>
+
+                <strong>
+                    {{ completed_appointments }}
+                </strong>
+
+            </div>
+
+
+
+            <!-- CANCELLED -->
+
+            <div class="stat-card cancelled-stat">
+
+                <span>
+                    Cancelled
+                </span>
+
+                <strong>
+                    {{ cancelled_appointments }}
+                </strong>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ==================================================
+             TODAY
+             ================================================== -->
+
+        <section class="section-card">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>
+                        Today's Appointments
+                    </h2>
+
+                    <p>
+                        Appointments scheduled for today
+                    </p>
+
+                </div>
+
+                <span class="today-count">
+
+                    {{ today_appointments|length }}
+
+                </span>
+
+            </div>
+
+
+
+            {% if today_appointments %}
+
+                <div class="today-list">
+
+                    {% for item in today_appointments %}
+
+                        <div class="today-item">
+
+
+                            <!-- TIME -->
+
+                            <div class="today-time">
+
+                                {% if item.slot %}
+
+                                    <strong>
+                                        {{ item.slot.start_time }}
+                                    </strong>
+
+                                    <span>
+                                        to
+                                        {{ item.slot.end_time }}
+                                    </span>
+
+                                {% else %}
+
+                                    <strong>
+                                        N/A
+                                    </strong>
+
+                                {% endif %}
+
+                            </div>
+
+
+
+                            <!-- PATIENT -->
+
+                            <div class="today-patient">
+
+                                {% if item.patient %}
+
+                                    <strong>
+                                        {{ item.patient.full_name }}
+                                    </strong>
+
+                                    {% if item.patient.email %}
+
+                                        <span>
+                                            {{ item.patient.email }}
+                                        </span>
+
+                                    {% endif %}
+
+                                {% else %}
+
+                                    <strong>
+                                        Unknown Patient
+                                    </strong>
+
+                                {% endif %}
+
+                            </div>
+
+
+
+                            <!-- STATUS -->
+
+                            <div>
+
+                                <span
+                                    class="status-badge status-{{ item.appointment.status }}"
+                                >
+                                    {{ item.appointment.status }}
+                                </span>
+
+                            </div>
+
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+
+            {% else %}
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        📅
+                    </div>
+
+                    <strong>
+                        No appointments today
+                    </strong>
+
+                    <span>
+                        You have no appointments scheduled for today.
+                    </span>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+
+        <!-- ==================================================
+             PROFESSIONAL INFORMATION
+             ================================================== -->
+
+        <section class="section-card">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>
+                        Professional Information
+                    </h2>
+
+                    <p>
+                        Your clinic and professional details
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="profile-grid">
+
+
+                <!-- NAME -->
+
+                <div class="profile-item">
+
+                    <small>
+                        Name
+                    </small>
+
+                    <strong>
+                        Dr. {{ doctor_user.full_name }}
+                    </strong>
+
+                </div>
+
+
+
+                <!-- SPECIALIZATION -->
+
+                <div class="profile-item">
+
+                    <small>
+                        Specialization
+                    </small>
+
+                    <strong>
+
+                        {% if specialization %}
+
+                            {{ specialization.name }}
+
+                        {% else %}
+
+                            Not specified
+
                         {% endif %}
-                    </td>
 
-                    <td>
-                        {{ item.slot.slot_date }}
-                    </td>
+                    </strong>
 
-                    <td>
-                        {{ item.slot.start_time }}
-                        -
-                        {{ item.slot.end_time }}
-                    </td>
-
-                    <td>
-                        <span class="type-badge">
-                            {{ item.appointment.appointment_type.replace("_", " ") }}
-                        </span>
-                    </td>
-
-                    <td>
-                        {{ item.appointment.problem_summary or "Not provided" }}
-                    </td>
-
-                    <td>
-
-                        <span class="status-badge status-{{ item.appointment.status }}">
-                            {{ item.appointment.status }}
-                        </span>
-
-                    </td>
-
-                </tr>
-
-            {% endfor %}
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-    {% else %}
-
-    <div class="empty-state">
-
-        <strong>No appointments yet</strong>
-
-        <span>
-            Your patient appointments will appear here.
-        </span>
-
-    </div>
-
-    {% endif %}
-
-</div>
+                </div>
 
 
-<!-- FOOTER -->
-<div style="text-align:center; color:#94a3b8; padding:20px 0;">
-    Vijayvargiya Clinic · Doctor Portal
-</div>
-```
 
-</div>
+                <!-- QUALIFICATION -->
+
+                <div class="profile-item">
+
+                    <small>
+                        Qualification
+                    </small>
+
+                    <strong>
+                        {{ doctor.qualification or "Not specified" }}
+                    </strong>
+
+                </div>
+
+
+
+                <!-- EXPERIENCE -->
+
+                <div class="profile-item">
+
+                    <small>
+                        Experience
+                    </small>
+
+                    <strong>
+                        {{ doctor.experience_years or 0 }}
+                        years
+                    </strong>
+
+                </div>
+
+
+
+                <!-- CONSULTATION FEE -->
+
+                <div class="profile-item">
+
+                    <small>
+                        Consultation Fee
+                    </small>
+
+                    <strong>
+                        ₹{{ doctor.consultation_fee }}
+                    </strong>
+
+                </div>
+
+
+
+                <!-- CLINIC -->
+
+                <div class="profile-item">
+
+                    <small>
+                        Clinic
+                    </small>
+
+                    <strong>
+                        {{ doctor.clinic_address or "Not specified" }}
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==================================================
+             ALL APPOINTMENTS
+             ================================================== -->
+
+        <section class="section-card">
+
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>
+                        My Appointments
+                    </h2>
+
+                    <p>
+                        Manage all patient appointments
+                    </p>
+
+                </div>
+
+                <span class="appointment-count">
+                    {{ appointments|length }}
+                </span>
+
+            </div>
+
+
+
+            {% if appointments %}
+
+                <div class="appointment-table-wrapper">
+
+                    <table class="appointment-table">
+
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Patient
+                                </th>
+
+                                <th>
+                                    Date
+                                </th>
+
+                                <th>
+                                    Time
+                                </th>
+
+                                <th>
+                                    Type
+                                </th>
+
+                                <th>
+                                    Problem
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Actions
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+
+                        <tbody>
+
+
+                            {% for item in appointments %}
+
+                                <tr>
+
+
+                                    <!-- =========================
+                                         PATIENT
+                                         ========================= -->
+
+                                    <td>
+
+                                        {% if item.patient %}
+
+                                            <span class="patient-name">
+                                                {{ item.patient.full_name }}
+                                            </span>
+
+
+                                            {% if item.patient.email %}
+
+                                                <span class="patient-email">
+                                                    {{ item.patient.email }}
+                                                </span>
+
+                                            {% endif %}
+
+
+                                        {% else %}
+
+                                            <span class="patient-name">
+                                                Unknown Patient
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+
+                                    <!-- =========================
+                                         DATE
+                                         ========================= -->
+
+                                    <td>
+
+                                        {% if item.slot %}
+
+                                            <span class="date-value">
+                                                {{ item.slot.slot_date }}
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="muted-text">
+                                                N/A
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+
+                                    <!-- =========================
+                                         TIME
+                                         ========================= -->
+
+                                    <td>
+
+                                        {% if item.slot %}
+
+                                            <span class="time-value">
+
+                                                {{ item.slot.start_time }}
+
+                                                <span class="time-separator">
+                                                    -
+                                                </span>
+
+                                                {{ item.slot.end_time }}
+
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="muted-text">
+                                                N/A
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+
+                                    <!-- =========================
+                                         TYPE
+                                         ========================= -->
+
+                                    <td>
+
+                                        <span class="type-badge">
+
+                                            {{ item.appointment.appointment_type.replace("_", " ") }}
+
+                                        </span>
+
+                                    </td>
+
+
+
+                                    <!-- =========================
+                                         PROBLEM
+                                         ========================= -->
+
+                                    <td>
+
+                                        <span class="problem-text">
+
+                                            {{ item.appointment.problem_summary or "Not provided" }}
+
+                                        </span>
+
+                                    </td>
+
+
+
+                                    <!-- =========================
+                                         STATUS
+                                         ========================= -->
+
+                                    <td>
+
+                                        <span
+                                            class="status-badge status-{{ item.appointment.status }}"
+                                        >
+
+                                            {{ item.appointment.status }}
+
+                                        </span>
+
+                                    </td>
+
+
+
+                                    <!-- =========================
+                                         ACTIONS
+                                         ========================= -->
+
+                                    <td>
+
+
+                                        <!-- PENDING -->
+
+                                        {% if item.appointment.status == "pending" %}
+
+                                            <div class="appointment-actions">
+
+
+                                                <!-- CONFIRM -->
+
+                                                <form
+                                                    method="post"
+                                                    action="/doctor/appointments/{{ item.appointment.id }}/status"
+                                                >
+
+                                                    <input
+                                                        type="hidden"
+                                                        name="status"
+                                                        value="confirmed"
+                                                    >
+
+                                                    <button
+                                                        type="submit"
+                                                        class="action-btn confirm-btn"
+                                                    >
+                                                        Confirm
+                                                    </button>
+
+                                                </form>
+
+
+
+                                                <!-- CANCEL -->
+
+                                                <form
+                                                    method="post"
+                                                    action="/doctor/appointments/{{ item.appointment.id }}/status"
+                                                >
+
+                                                    <input
+                                                        type="hidden"
+                                                        name="status"
+                                                        value="cancelled"
+                                                    >
+
+                                                    <button
+                                                        type="submit"
+                                                        class="action-btn cancel-btn"
+                                                    >
+                                                        Cancel
+                                                    </button>
+
+                                                </form>
+
+
+                                            </div>
+
+
+
+                                        <!-- CONFIRMED -->
+
+                                        {% elif item.appointment.status == "confirmed" %}
+
+                                            <div class="appointment-actions">
+
+
+                                                <!-- COMPLETE -->
+
+                                                <form
+                                                    method="post"
+                                                    action="/doctor/appointments/{{ item.appointment.id }}/status"
+                                                >
+
+                                                    <input
+                                                        type="hidden"
+                                                        name="status"
+                                                        value="completed"
+                                                    >
+
+                                                    <button
+                                                        type="submit"
+                                                        class="action-btn complete-btn"
+                                                    >
+                                                        Mark Complete
+                                                    </button>
+
+                                                </form>
+
+
+
+                                                <!-- CANCEL -->
+
+                                                <form
+                                                    method="post"
+                                                    action="/doctor/appointments/{{ item.appointment.id }}/status"
+                                                >
+
+                                                    <input
+                                                        type="hidden"
+                                                        name="status"
+                                                        value="cancelled"
+                                                    >
+
+                                                    <button
+                                                        type="submit"
+                                                        class="action-btn cancel-btn"
+                                                    >
+                                                        Cancel
+                                                    </button>
+
+                                                </form>
+
+
+                                            </div>
+
+
+
+                                        <!-- COMPLETED -->
+
+                                        {% elif item.appointment.status == "completed" %}
+
+                                            <span class="action-done">
+                                                Completed
+                                            </span>
+
+
+
+                                        <!-- CANCELLED -->
+
+                                        {% elif item.appointment.status == "cancelled" %}
+
+                                            <span class="action-done cancelled-text">
+                                                Cancelled
+                                            </span>
+
+                                        {% endif %}
+
+
+                                    </td>
+
+
+                                </tr>
+
+                            {% endfor %}
+
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+
+            {% else %}
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        📋
+                    </div>
+
+                    <strong>
+                        No appointments yet
+                    </strong>
+
+                    <span>
+                        Your patient appointments will appear here.
+                    </span>
+
+                </div>
+
+            {% endif %}
+
+
+        </section>
+
+
+
+        <!-- ==================================================
+             FOOTER
+             ================================================== -->
+
+        <footer class="dashboard-footer">
+
+            Vijayvargiya Clinic · Doctor Portal
+
+        </footer>
+
+
+    </main>
+
 
 </body>
+
 </html>
