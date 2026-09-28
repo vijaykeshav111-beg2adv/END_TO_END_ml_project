@@ -1,5 +1,5 @@
-<!DOCTYPE html>
 
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -11,7 +11,9 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>AI Health Assistant | Vijayvargiya Clinic</title>
+    <title>
+        AI Health Assistant | Vijayvargiya Clinic
+    </title>
 
     <style>
 
@@ -30,7 +32,7 @@
 
             background: #f4f7fb;
 
-            height: 100vh;
+            min-height: 100vh;
 
             display: flex;
 
@@ -39,13 +41,14 @@
             align-items: center;
         }
 
+
         .chat-container {
 
             width: 95%;
 
-            max-width: 900px;
+            max-width: 1000px;
 
-            height: 90vh;
+            height: 92vh;
 
             background: white;
 
@@ -62,30 +65,72 @@
             overflow: hidden;
         }
 
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
         .chat-header {
 
             background: #1769aa;
 
             color: white;
 
-            padding: 20px;
+            padding: 18px 25px;
 
-            text-align: center;
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
         }
 
-        .chat-header h2 {
+
+        .header-left h2 {
 
             margin: 0 0 5px 0;
+
+            font-size: 21px;
         }
 
-        .chat-header p {
+
+        .header-left p {
 
             margin: 0;
 
-            font-size: 14px;
+            font-size: 13px;
 
             opacity: 0.9;
         }
+
+
+        .home-button {
+
+            color: white;
+
+            text-decoration: none;
+
+            border: 1px solid
+                rgba(255,255,255,0.5);
+
+            padding: 8px 13px;
+
+            border-radius: 8px;
+
+            font-size: 13px;
+        }
+
+
+        .home-button:hover {
+
+            background:
+                rgba(255,255,255,0.12);
+        }
+
+
+        /* =====================================================
+           CHAT MESSAGES
+        ===================================================== */
 
         .chat-messages {
 
@@ -102,18 +147,24 @@
             gap: 15px;
         }
 
+
         .message {
 
-            max-width: 75%;
+            max-width: 78%;
 
-            padding: 12px 16px;
+            padding: 13px 16px;
 
             border-radius: 15px;
 
-            line-height: 1.5;
+            line-height: 1.55;
 
             white-space: pre-wrap;
+
+            word-wrap: break-word;
+
+            font-size: 15px;
         }
+
 
         .user {
 
@@ -126,6 +177,7 @@
             border-bottom-right-radius: 4px;
         }
 
+
         .assistant {
 
             align-self: flex-start;
@@ -137,12 +189,134 @@
             border-bottom-left-radius: 4px;
         }
 
+
         .typing {
 
             color: #666;
 
             font-style: italic;
         }
+
+
+        /* =====================================================
+           DOCTOR RECOMMENDATIONS
+        ===================================================== */
+
+        .recommendation-container {
+
+            align-self: flex-start;
+
+            width: 90%;
+
+            max-width: 700px;
+        }
+
+
+        .recommendation-title {
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            margin-bottom: 10px;
+
+            color: #1769aa;
+        }
+
+
+        .doctor-card {
+
+            background: white;
+
+            border: 1px solid #dce4ec;
+
+            border-radius: 12px;
+
+            padding: 15px;
+
+            margin-bottom: 10px;
+
+            box-shadow:
+                0 3px 10px
+                rgba(0,0,0,0.05);
+        }
+
+
+        .doctor-name {
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            margin-bottom: 7px;
+        }
+
+
+        .doctor-info {
+
+            font-size: 13px;
+
+            color: #555;
+
+            line-height: 1.6;
+        }
+
+
+        .doctor-slots {
+
+            margin-top: 10px;
+
+            font-size: 13px;
+
+            color: #1769aa;
+
+            font-weight: bold;
+        }
+
+
+        .doctor-button {
+
+            display: inline-block;
+
+            margin-top: 10px;
+
+            padding: 8px 13px;
+
+            background: #1769aa;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 7px;
+
+            font-size: 13px;
+        }
+
+
+        .doctor-button:hover {
+
+            background: #0d527f;
+        }
+
+
+        /* =====================================================
+           INPUT
+        ===================================================== */
+
+        .disclaimer {
+
+            font-size: 11px;
+
+            text-align: center;
+
+            color: #777;
+
+            padding: 8px 15px;
+
+            border-top: 1px solid #eee;
+        }
+
 
         .chat-input-area {
 
@@ -154,6 +328,7 @@
 
             gap: 10px;
         }
+
 
         #messageInput {
 
@@ -169,6 +344,13 @@
 
             font-size: 15px;
         }
+
+
+        #messageInput:focus {
+
+            border-color: #1769aa;
+        }
+
 
         #sendButton {
 
@@ -187,10 +369,12 @@
             font-weight: bold;
         }
 
+
         #sendButton:hover {
 
             background: #0d527f;
         }
+
 
         #sendButton:disabled {
 
@@ -199,15 +383,52 @@
             cursor: not-allowed;
         }
 
-        .disclaimer {
 
-            font-size: 11px;
+        /* =====================================================
+           MOBILE
+        ===================================================== */
 
-            text-align: center;
+        @media (max-width: 650px) {
 
-            color: #777;
+            body {
 
-            padding: 8px;
+                align-items: stretch;
+            }
+
+
+            .chat-container {
+
+                width: 100%;
+
+                height: 100vh;
+
+                border-radius: 0;
+            }
+
+
+            .chat-header {
+
+                padding: 15px;
+            }
+
+
+            .header-left h2 {
+
+                font-size: 17px;
+            }
+
+
+            .message {
+
+                max-width: 88%;
+            }
+
+
+            .recommendation-container {
+
+                width: 95%;
+            }
+
         }
 
     </style>
@@ -217,20 +438,43 @@
 
 <body>
 
+
 <div class="chat-container">
+
+
+    <!-- =====================================================
+         HEADER
+    ===================================================== -->
 
     <div class="chat-header">
 
-        <h2>
-            Vijayvargiya Clinic AI Assistant
-        </h2>
+        <div class="header-left">
 
-        <p>
-            Ask general health-related questions
-        </p>
+            <h2>
+                🤖 Vijayvargiya Clinic AI Assistant
+            </h2>
+
+            <p>
+                General health information and
+                doctor department guidance
+            </p>
+
+        </div>
+
+
+        <a
+            href="/"
+            class="home-button"
+        >
+            ← Home
+        </a>
 
     </div>
 
+
+    <!-- =====================================================
+         CHAT MESSAGES
+    ===================================================== -->
 
     <div
         id="chatMessages"
@@ -242,29 +486,43 @@
             Hello! I am the Vijayvargiya Clinic
             AI assistant.
 
-            How can I help you today?
+            Tell me about your health concern and
+            I can provide general information and
+            suggest the relevant clinic department.
 
         </div>
 
     </div>
 
 
+    <!-- =====================================================
+         DISCLAIMER
+    ===================================================== -->
+
     <div class="disclaimer">
 
-        This AI provides general information and
-        does not replace professional medical advice.
+        This AI provides general information only.
+        It does not diagnose conditions or replace
+        professional medical advice.
+
+        For emergencies, seek immediate medical care.
 
     </div>
 
+
+    <!-- =====================================================
+         INPUT
+    ===================================================== -->
 
     <div class="chat-input-area">
 
         <input
             id="messageInput"
             type="text"
-            placeholder="Type your message..."
+            placeholder="Describe your health concern..."
             autocomplete="off"
         >
+
 
         <button
             id="sendButton"
@@ -274,26 +532,38 @@
 
     </div>
 
+
 </div>
 
 
 <script>
+
+
+/* ============================================================
+   ELEMENTS
+============================================================ */
 
 const messageInput =
     document.getElementById(
         "messageInput"
     );
 
+
 const sendButton =
     document.getElementById(
         "sendButton"
     );
+
 
 const chatMessages =
     document.getElementById(
         "chatMessages"
     );
 
+
+/* ============================================================
+   ADD NORMAL MESSAGE
+============================================================ */
 
 function addMessage(
     message,
@@ -303,40 +573,304 @@ function addMessage(
     const div =
         document.createElement("div");
 
+
     div.classList.add(
         "message",
         role
     );
 
-    div.textContent = message;
 
-    chatMessages.appendChild(div);
+    div.textContent =
+        message;
+
+
+    chatMessages.appendChild(
+        div
+    );
+
+
+    scrollToBottom();
+}
+
+
+/* ============================================================
+   SCROLL
+============================================================ */
+
+function scrollToBottom() {
 
     chatMessages.scrollTop =
         chatMessages.scrollHeight;
 }
 
 
+/* ============================================================
+   ADD DOCTOR RECOMMENDATIONS
+============================================================ */
+
+function addDoctorRecommendations(
+    recommendation
+) {
+
+    if (
+        !recommendation ||
+        !recommendation.doctors ||
+        recommendation.doctors.length === 0
+    ) {
+
+        return;
+    }
+
+
+    const container =
+        document.createElement("div");
+
+
+    container.classList.add(
+        "recommendation-container"
+    );
+
+
+    const title =
+        document.createElement("div");
+
+
+    title.classList.add(
+        "recommendation-title"
+    );
+
+
+    title.textContent =
+        "🏥 Available Doctors";
+
+
+    container.appendChild(
+        title
+    );
+
+
+    recommendation.doctors.forEach(
+        function(doctor) {
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.classList.add(
+                "doctor-card"
+            );
+
+
+            const name =
+                document.createElement(
+                    "div"
+                );
+
+
+            name.classList.add(
+                "doctor-name"
+            );
+
+
+            name.textContent =
+                "Dr. " +
+                doctor.name;
+
+
+            card.appendChild(
+                name
+            );
+
+
+            const info =
+                document.createElement(
+                    "div"
+                );
+
+
+            info.classList.add(
+                "doctor-info"
+            );
+
+
+            let information = "";
+
+
+            if (
+                doctor.specialization
+            ) {
+
+                information +=
+                    "Specialization: " +
+                    doctor.specialization +
+                    "\n";
+            }
+
+
+            if (
+                doctor.qualification
+            ) {
+
+                information +=
+                    "Qualification: " +
+                    doctor.qualification +
+                    "\n";
+            }
+
+
+            if (
+                doctor.experience_years !== null &&
+                doctor.experience_years !== undefined
+            ) {
+
+                information +=
+                    "Experience: " +
+                    doctor.experience_years +
+                    " years\n";
+            }
+
+
+            if (
+                doctor.consultation_fee !== null &&
+                doctor.consultation_fee !== undefined
+            ) {
+
+                information +=
+                    "Consultation fee: ₹" +
+                    doctor.consultation_fee;
+            }
+
+
+            info.textContent =
+                information;
+
+
+            card.appendChild(
+                info
+            );
+
+
+            if (
+                doctor.available_slots &&
+                doctor.available_slots.length > 0
+            ) {
+
+                const slots =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                slots.classList.add(
+                    "doctor-slots"
+                );
+
+
+                slots.textContent =
+                    "✓ " +
+                    doctor.available_slots.length +
+                    " available appointment slot(s)";
+
+
+                card.appendChild(
+                    slots
+                );
+
+
+                /*
+                 * Open doctor profile.
+                 *
+                 * Your existing main.py has:
+                 *
+                 * /doctors/{doctor_id}
+                 */
+
+                const button =
+                    document.createElement(
+                        "a"
+                    );
+
+
+                button.classList.add(
+                    "doctor-button"
+                );
+
+
+                button.href =
+                    "/doctors/" +
+                    doctor.doctor_id;
+
+
+                button.textContent =
+                    "View Doctor & Slots →";
+
+
+                card.appendChild(
+                    button
+                );
+            }
+
+
+            container.appendChild(
+                card
+            );
+
+        }
+    );
+
+
+    chatMessages.appendChild(
+        container
+    );
+
+
+    scrollToBottom();
+}
+
+
+/* ============================================================
+   SEND MESSAGE
+============================================================ */
+
 async function sendMessage() {
 
     const message =
         messageInput.value.trim();
 
+
     if (!message) {
+
         return;
     }
+
+
+    /* --------------------------------------------------------
+       USER MESSAGE
+    -------------------------------------------------------- */
 
     addMessage(
         message,
         "user"
     );
 
+
     messageInput.value = "";
+
 
     sendButton.disabled = true;
 
+
+    /* --------------------------------------------------------
+       TYPING
+    -------------------------------------------------------- */
+
     const typing =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
+
 
     typing.classList.add(
         "message",
@@ -344,23 +878,31 @@ async function sendMessage() {
         "typing"
     );
 
+
     typing.textContent =
         "AI is thinking...";
+
 
     chatMessages.appendChild(
         typing
     );
 
-    chatMessages.scrollTop =
-        chatMessages.scrollHeight;
+
+    scrollToBottom();
 
 
     try {
+
+
+        /* ----------------------------------------------------
+           API REQUEST
+        ---------------------------------------------------- */
 
         const response =
             await fetch(
                 "/api/ai/chat",
                 {
+
                     method: "POST",
 
                     headers: {
@@ -371,29 +913,59 @@ async function sendMessage() {
                     body: JSON.stringify({
                         message: message
                     })
+
                 }
             );
 
 
-        const data =
-            await response.json();
+        /* ----------------------------------------------------
+           RESPONSE
+        ---------------------------------------------------- */
+
+        let data;
 
 
-        typing.remove();
+        try {
 
+            data =
+                await response.json();
 
-        if (!response.ok) {
+        } catch (jsonError) {
+
+            typing.remove();
 
             addMessage(
-                data.detail ||
-                data.message ||
-                "Something went wrong.",
+                "The server returned an invalid response.",
                 "assistant"
             );
 
             return;
         }
 
+
+        typing.remove();
+
+
+        /* ----------------------------------------------------
+           ERROR
+        ---------------------------------------------------- */
+
+        if (!response.ok) {
+
+            addMessage(
+                data.detail ||
+                data.message ||
+                "Something went wrong while contacting the AI.",
+                "assistant"
+            );
+
+            return;
+        }
+
+
+        /* ----------------------------------------------------
+           AI MESSAGE
+        ---------------------------------------------------- */
 
         if (
             data.success &&
@@ -412,34 +984,70 @@ async function sendMessage() {
                 "AI could not generate a response.",
                 "assistant"
             );
+
+        }
+
+
+        /* ----------------------------------------------------
+           DOCTOR RECOMMENDATIONS
+        ---------------------------------------------------- */
+
+        if (
+            data.recommendation
+        ) {
+
+            addDoctorRecommendations(
+                data.recommendation
+            );
+
         }
 
 
     } catch (error) {
 
+
+        console.error(
+            "AI CHAT ERROR:",
+            error
+        );
+
+
         typing.remove();
 
+
         addMessage(
-            "Unable to connect to the AI service.",
+            "Unable to connect to the AI service. Please try again.",
             "assistant"
         );
 
-        console.error(error);
 
     } finally {
 
+
         sendButton.disabled = false;
 
+
         messageInput.focus();
+
+
     }
+
 }
 
+
+/* ============================================================
+   SEND BUTTON
+============================================================ */
 
 sendButton.addEventListener(
     "click",
     sendMessage
 );
 
+
+/* ============================================================
+   ENTER KEY
+============================================================ */
 
 messageInput.addEventListener(
     "keydown",
@@ -452,16 +1060,24 @@ messageInput.addEventListener(
             event.preventDefault();
 
             sendMessage();
+
         }
 
     }
 );
 
 
+/* ============================================================
+   INITIAL FOCUS
+============================================================ */
+
 messageInput.focus();
 
+
 </script>
+
 
 </body>
 
 </html>
+

@@ -1,6 +1,6 @@
 import sys
 import uvicorn
-
+from routers.ai import router as ai_router
 from datetime import date
 from urllib.parse import quote
 
@@ -61,7 +61,7 @@ from routers.auth import (
     get_current_doctor,
 )
 
-from routers.ai import router as ai_router
+
 
 
 # ============================================================
@@ -81,7 +81,8 @@ app = FastAPI(
     version="2.0.0",
 )
 
-
+# AI ROUTER
+app.include_router(ai_router)
 # ============================================================
 # SESSION MIDDLEWARE
 # ============================================================
@@ -114,8 +115,7 @@ templates = Jinja2Templates(
     directory="templates"
 )
 
-# AI ROUTER
-app.include_router(ai_router)
+
 # ============================================================
 # AUTH ROUTER
 # ============================================================
